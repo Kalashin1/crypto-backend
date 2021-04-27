@@ -1,0 +1,28 @@
+"use strict";
+exports.__esModule = true;
+var express = require("express");
+var mongoose = require("mongoose");
+var cors = require("cors");
+var cookieParser = require("cookie-parser");
+// OUR CUSTOM IMPORTS WILL SIT HERE
+// IMPORTING OUR DIFF ROUTERS
+var router_1 = require("./router/router");
+// CREATING OUR SEVER APP WITH EXPRESS
+var app = express();
+// OUR APP WILL RUN ON THE PORT GIVEN BELOW
+var PORT = 8080;
+// THIS STRING IS THE LINK TO OUR MONGODB
+var url = 'mongodb://localhost:27017/crypto';
+var corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    exposedHeaders: ['set-cookie']
+};
+// MIDDLEWARES
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(router_1["default"]);
+app.use(cookieParser);
+// routes
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+    .then(function (result) { return app.listen(PORT, function () { return console.log("app running on port " + PORT); }); })["catch"](function (err) { return console.log(err); });
