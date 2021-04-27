@@ -4,7 +4,8 @@ import { Router } from 'express'
 // OUR CUSTOM HANDLERS WILL BE IMPORTED HERE
 import { 
   createUserWithEmailAndPassword,
-  loginUserWithEmailAndPassword
+  loginUserWithEmailAndPassword,
+  logoutUser
  } from '../controllers/auth/auth-cont'
 
 const router = Router();
@@ -17,6 +18,9 @@ router.post('/signup', createUserWithEmailAndPassword)
 
 // login route and handler function
 router.post('/login', loginUserWithEmailAndPassword)
+
+//logout route and handler function
+router.get('/logout', logoutUser)
 
 router.get('/', (req: express.Request, res: express.Response) => {
   res.setHeader('Content-Type','text/html')
