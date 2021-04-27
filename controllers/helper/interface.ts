@@ -1,10 +1,13 @@
-import { Document } from 'mongoose'
+import { Document, Model } from 'mongoose'
 
-interface userInterface extends Document {
+interface userInterface extends Document{
   name: any,
   email: any,
   phoneNumber: any,
   password: any
 }
 
-export { userInterface }
+interface loginUser extends Model<any> {
+  login(email: string, password: string): userInterface
+}
+export { userInterface, loginUser }

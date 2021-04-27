@@ -62,5 +62,33 @@ user_1["default"].pre('save', function (next) {
         });
     });
 });
+// STATIC METHODS 
+// LOGIN 
+user_1["default"].statics.login = function (email, password) {
+    return __awaiter(this, void 0, void 0, function () {
+        var user, result;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, this.findOne({ email: email })
+                    // if user with the email exists then compare passowrds
+                ];
+                case 1:
+                    user = _a.sent();
+                    if (!user) return [3 /*break*/, 3];
+                    return [4 /*yield*/, bcrypt.compare(password, user.password)];
+                case 2:
+                    result = _a.sent();
+                    if (result) {
+                        return [2 /*return*/, user];
+                    }
+                    else {
+                        throw Error('incorrect password');
+                    }
+                    _a.label = 3;
+                case 3: throw Error('incorrect email, no user exists for this email');
+            }
+        });
+    });
+};
 var userModel = mongoose.model('user', user_1["default"]);
 exports["default"] = userModel;

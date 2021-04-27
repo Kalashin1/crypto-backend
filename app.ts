@@ -11,13 +11,13 @@ import router from './router/router';
 // CREATING OUR SEVER APP WITH EXPRESS
 const app = express()
 // OUR APP WILL RUN ON THE PORT GIVEN BELOW
-const PORT = 8080;
+const PORT = 4000;
 // THIS STRING IS THE LINK TO OUR MONGODB
 const url = 'mongodb://localhost:27017/crypto'
 
 
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: 'http://*',
   credentials: true,
   exposedHeaders: ['set-cookie']
 }
@@ -25,8 +25,9 @@ const corsOptions = {
 // MIDDLEWARES
 app.use(cors(corsOptions))
 app.use(express.json())
-app.use(router)
 app.use(cookieParser)
+app.use(router)
+
 
 // routes
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})

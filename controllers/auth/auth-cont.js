@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.createUserWithEmailAndPassword = void 0;
+exports.logoutUser = exports.loginUserWithEmailAndPassword = exports.createUserWithEmailAndPassword = void 0;
 // IMPORTING USER MODEL TO CREATE A USER
 var user_1 = require("../../data/models/user");
 var jwt_handler_1 = require("../helper/jwt-handler");
@@ -51,11 +51,15 @@ var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, user_1["default"].create({ name: name, email: email, password: password, phoneNumber: phoneNumber })];
+                return [4 /*yield*/, user_1["default"].create({ name: name, email: email, password: password, phoneNumber: phoneNumber })
+                    // CREATE A COOKIE TO HOLD THE JWT
+                ];
             case 2:
                 user = _b.sent();
                 token = jwt_handler_1.createToken(user._id);
-                res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 });
+                // send the cookie back to the user agent
+                res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // in production add secure:true
+                // send some user data
                 res.json({
                     name: user.name,
                     id: user._id,
@@ -65,8 +69,8 @@ var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void
                 return [3 /*break*/, 4];
             case 3:
                 err_1 = _b.sent();
-                console.log(err_1.message);
-                errors = error_handler_1["default"](err_1);
+                errors = error_handler_1["default"](err_1) // send back the handled error to the frontend
+                ;
                 res.json(errors);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
@@ -74,3 +78,43 @@ var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void
     });
 }); };
 exports.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, user, token, err_2, errors;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, email = _a.email, password = _a.password;
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, user_1["default"].login(email, password)]; // Login the user
+            case 2:
+                user = _b.sent() // Login the user
+                ;
+                token = jwt_handler_1.createToken(user._id) // create a token with their id
+                ;
+                res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // send a cookie that holds the jwt, add secure:true for production
+                res.json({ name: user.name, id: user._id, email: user.email }); // send back some user info to frontend
+                return [3 /*break*/, 4];
+            case 3:
+                err_2 = _b.sent();
+                errors = error_handler_1["default"](err_2) // send back the handled error to the frontend
+                ;
+                res.json(errors);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
+exports.loginUserWithEmailAndPassword = loginUserWithEmailAndPassword;
+var logoutUser = function (req, res) {
+    console.log(req.cookies);
+    if (req.cookies.jwt) { // if a cookie for a user exists, 
+        res.cookie('jwt', '', { maxAge: 1 }); // delete the cookie 
+        res.json({ message: 'logout successfull' }); // notify the frontend
+    }
+    else {
+        res.json({ message: 'you are not logged in' }); // they are not logged in
+    }
+};
+exports.logoutUser = logoutUser;

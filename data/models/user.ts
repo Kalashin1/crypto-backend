@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt'
 // IMPORT THE USER SCHEMA 
 import userSchema from '../Schemas/user'
 
-import { userInterface } from '../../controllers/helper/interface'
+import { userInterface, loginUser } from '../../controllers/helper/interface'
 
 const saltRounds = 10
 
@@ -19,6 +19,27 @@ userSchema.pre('save', async function(next){
 
 })
 
-const userModel = mongoose.model('user',userSchema)
+
+
+// STATIC METHODS 
+// LOGIN 
+userSchema.statics.login = async function(email: string, password: string) {
+  // ensure the email exists inside the database
+
+  const user = await this.findOne({email})
+  // if user with the email exists then compare passowrds
+  if(user){
+    const result = await bcrypt.compare(password, user.password)
+    if(result){
+      return user
+    }
+    else{
+      throw Error('incorrect password')
+    }
+  }
+  throw Error('incorrect email, no user exists for this email')
+}
+
+const userModel = mongoose.model<userInterface, loginUser>('user',userSchema)
 
 export default userModel
