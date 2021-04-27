@@ -8,6 +8,9 @@ import {
   logoutUser
  } from '../controllers/auth/auth-cont'
 
+ // validating and obtaining user modules
+ import { validateUser } from '../controllers/auth/validate-user'
+
 const router = Router();
 
 

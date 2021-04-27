@@ -4,6 +4,9 @@ import * as cors from 'cors'
 import * as cookieParser from 'cookie-parser'
 
 
+import { getUser } from './controllers/auth/validate-user'
+
+
 // OUR CUSTOM IMPORTS WILL SIT HERE
 // IMPORTING OUR DIFF ROUTERS
 import router from './router/router';
@@ -33,3 +36,6 @@ app.use(router)
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
 .then(result => app.listen(PORT, () => console.log(`app running on port ${PORT}`)))
 .catch(err => console.log(err))
+
+
+app.get('/user', getUser)

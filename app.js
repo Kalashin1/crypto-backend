@@ -4,6 +4,7 @@ var express = require("express");
 var mongoose = require("mongoose");
 var cors = require("cors");
 var cookieParser = require("cookie-parser");
+var validate_user_1 = require("./controllers/auth/validate-user");
 // OUR CUSTOM IMPORTS WILL SIT HERE
 // IMPORTING OUR DIFF ROUTERS
 var router_1 = require("./router/router");
@@ -26,3 +27,4 @@ app.use(router_1["default"]);
 // routes
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     .then(function (result) { return app.listen(PORT, function () { return console.log("app running on port " + PORT); }); })["catch"](function (err) { return console.log(err); });
+app.get('/user', validate_user_1.getUser);
