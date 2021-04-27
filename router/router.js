@@ -7,6 +7,8 @@ var router = express_1.Router();
 // AUTH ROUTES
 // SIGUP ROUTE AND HANDLER FUNCTION
 router.post('/signup', auth_cont_1.createUserWithEmailAndPassword);
+// login route and handler function
+router.post('/login', auth_cont_1.loginUserWithEmailAndPassword);
 router.get('/', function (req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.send('<h1>Hello World</h1>');

@@ -2,14 +2,21 @@ import * as express from 'express'
 import { Router } from 'express'
 
 // OUR CUSTOM HANDLERS WILL BE IMPORTED HERE
-import { createUserWithEmailAndPassword } from '../controllers/auth/auth-cont'
+import { 
+  createUserWithEmailAndPassword,
+  loginUserWithEmailAndPassword
+ } from '../controllers/auth/auth-cont'
 
 const router = Router();
 
 
 // AUTH ROUTES
+
 // SIGUP ROUTE AND HANDLER FUNCTION
 router.post('/signup', createUserWithEmailAndPassword)
+
+// login route and handler function
+router.post('/login', loginUserWithEmailAndPassword)
 
 router.get('/', (req: express.Request, res: express.Response) => {
   res.setHeader('Content-Type','text/html')

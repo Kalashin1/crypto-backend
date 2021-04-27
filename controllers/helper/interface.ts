@@ -1,4 +1,4 @@
-import { Document } from 'mongoose'
+import { Document, Model } from 'mongoose'
 
 interface userInterface extends Document {
   name: any,
@@ -7,4 +7,8 @@ interface userInterface extends Document {
   password: any
 }
 
-export { userInterface }
+interface userModel extends Model<userInterface>{
+  login(email:string, password: string): userInterface
+}
+
+export { userInterface, userModel }
