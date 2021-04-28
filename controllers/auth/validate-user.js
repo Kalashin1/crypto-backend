@@ -36,57 +36,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var mongoose = require("mongoose");
-var bcrypt = require("bcrypt");
-// IMPORT THE USER SCHEMA 
-var user_1 = require("../Schemas/user");
-var saltRounds = 10;
-//HASHING USERS PASSWORD
-user_1["default"].pre('save', function (next) {
-    return __awaiter(this, void 0, void 0, function () {
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    if (!(this.password.length < 15)) return [3 /*break*/, 2];
-                    _a = this;
-                    return [4 /*yield*/, bcrypt.hash(this.password, saltRounds)];
-                case 1:
-                    _a.password = _b.sent();
-                    next();
-                    _b.label = 2;
-                case 2:
-                    next();
-                    return [2 /*return*/];
+exports.getUser = exports.validateUser = void 0;
+var jwt = require("jsonwebtoken");
+var user_1 = require("../../data/models/user");
+var validateUser = function (req, res, next) {
+    var token = req.cookies.jwt;
+    if (token) {
+        jwt.verify(token, 'my secrete key', function (err, decodedToken) {
+            if (err) {
+                // console.log(err.message)
+                res.status(400).json(err.message);
+            }
+            else {
+                // console.log(decodedToken)
+                next();
             }
         });
-    });
-});
-user_1["default"].statics.login = function (email, password) {
-    return __awaiter(this, void 0, void 0, function () {
-        var user, result;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, this.findOne({ email: email })
-                    // if user with the email exists then compare passowrds
-                ];
-                case 1:
-                    user = _a.sent();
-                    if (!user) return [3 /*break*/, 3];
-                    return [4 /*yield*/, bcrypt.compare(password, user.password)];
-                case 2:
-                    result = _a.sent();
-                    if (result) {
-                        return [2 /*return*/, user];
-                    }
-                    else {
-                        throw Error('incorrect password');
-                    }
-                    _a.label = 3;
-                case 3: throw Error('incorrect email, no user exists for this email');
-            }
-        });
-    });
+    }
+    else {
+        // console.log('no cookie')
+        res.status(400).json('you are not logged in');
+    }
 };
-var userModel = mongoose.model('user', user_1["default"]);
-exports["default"] = userModel;
+exports.validateUser = validateUser;
+var getUser = function (req, res) {
+    var token = req.cookies.jwt;
+    if (token) {
+        jwt.verify(token, 'my secrete key', function (err, decodedToken) { return __awaiter(void 0, void 0, void 0, function () {
+            var user;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!err) return [3 /*break*/, 1];
+                        console.log(err);
+                        return [3 /*break*/, 3];
+                    case 1: return [4 /*yield*/, user_1["default"].findById(decodedToken.id)];
+                    case 2:
+                        user = _a.sent();
+                        res.json({ name: user === null || user === void 0 ? void 0 : user.name, email: user === null || user === void 0 ? void 0 : user.email, id: user === null || user === void 0 ? void 0 : user._id });
+                        _a.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+    }
+    else {
+        // console.log('no cookie')
+        res.status(400).json('you are not logged in');
+    }
+};
+exports.getUser = getUser;
