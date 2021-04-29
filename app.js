@@ -15,7 +15,7 @@ var PORT = 8080;
 // THIS STRING IS THE LINK TO OUR MONGODB
 var url = 'mongodb://localhost:27017/crypto';
 var corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:4200',
     credentials: true,
     exposedHeaders: ['set-cookie']
 };
