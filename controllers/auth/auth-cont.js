@@ -78,43 +78,47 @@ var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void
     });
 }); };
 exports.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+// Login a user
 var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, email, password, user, token, err_2, errors;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body, email = _a.email, password = _a.password;
+                _a = req.body // retrieve email and password 
+                , email = _a.email, password = _a.password;
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, user_1["default"].login(email, password)]; // Login the user
+                return [4 /*yield*/, user_1["default"].login(email, password)]; // login with email and password
             case 2:
-                user = _b.sent() // Login the user
+                user = _b.sent() // login with email and password
                 ;
-                token = jwt_handler_1.createToken(user._id) // create a token with their id
+                token = jwt_handler_1.createToken(user._id) // create a token for that user
                 ;
-                res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // send a cookie that holds the jwt, add secure:true for production
-                res.json({ name: user.name, id: user._id, email: user.email }); // send back some user info to frontend
+                res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // create a cookie to hold the jwt
+                res.json({ name: user.name, id: user._id, email: user.email }); // send some of the user info back
                 return [3 /*break*/, 4];
             case 3:
                 err_2 = _b.sent();
-                errors = error_handler_1["default"](err_2) // send back the handled error to the frontend
-                ;
-                res.json(errors);
+                errors = error_handler_1["default"](err_2);
+                res.status(400).json(errors);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
 exports.loginUserWithEmailAndPassword = loginUserWithEmailAndPassword;
-var logoutUser = function (req, res) {
-    console.log(req.cookies);
-    if (req.cookies.jwt) { // if a cookie for a user exists, 
-        res.cookie('jwt', '', { maxAge: 1 }); // delete the cookie 
-        res.json({ message: 'logout successfull' }); // notify the frontend
-    }
-    else {
-        res.json({ message: 'you are not logged in' }); // they are not logged in
-    }
-};
+var logoutUser = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        if (typeof req.cookies.jwt !== undefined) { // if cookie with the value of jwt exists
+            // res.cookie('jwt', '', {maxAge: 1}) // delete the cookie
+            res.clearCookie('jwt');
+            res.json({ message: 'logout successfull' }); // send the user a logout successfull message
+        }
+        else {
+            res.json({ message: 'you are not logged in' }); // notify the user that they are not logged in
+        }
+        return [2 /*return*/];
+    });
+}); };
 exports.logoutUser = logoutUser;

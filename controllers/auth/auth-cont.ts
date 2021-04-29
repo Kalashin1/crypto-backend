@@ -52,36 +52,6 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
  }
 }
 
-<<<<<<< HEAD
-const loginUserWithEmailAndPassword = async (req: express.Request, res: express.Response) => {
-
-  const { email, password } = req.body
-
-  try{
-    const user = await userModel.login(email, password) // Login the user
-
-    const token = createToken(user._id) // create a token with their id
-
-    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // send a cookie that holds the jwt, add secure:true for production
-    
-    res.json({name: user.name, id: user._id, email: user.email}) // send back some user info to frontend
-  }
-  catch (err) {
-    // console.log(err.message) // handles the error if ther is an error
-    let errors = errorHandler(err) // send back the handled error to the frontend
-    res.json(errors)
-  }
-}
-
-const logoutUser = (req: express.Request, res: express.Response) => {
-  console.log(req.cookies)
-  if(req.cookies.jwt){ // if a cookie for a user exists, 
-    res.cookie('jwt', '', {maxAge: 1}) // delete the cookie 
-    res.json({message: 'logout successfull'}) // notify the frontend
-  }
-  else{
-    res.json({message: 'you are not logged in'}) // they are not logged in
-=======
 // Login a user
 const loginUserWithEmailAndPassword = async (req: express.Request, res: express.Response) => {
   
@@ -115,18 +85,11 @@ const logoutUser = async (req: express.Request, res: express.Response) => {
   }
   else{
     res.json({message: 'you are not logged in'}) // notify the user that they are not logged in
->>>>>>> logout
   }
 }
 
 export { 
-<<<<<<< HEAD
   createUserWithEmailAndPassword,  // signup function
   loginUserWithEmailAndPassword,  // login function
   logoutUser                     // logout function
-=======
-  createUserWithEmailAndPassword,   // signup function
-  loginUserWithEmailAndPassword,    // login function
-  logoutUser                       // logout function
->>>>>>> logout
 }

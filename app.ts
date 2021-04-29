@@ -29,10 +29,7 @@ const corsOptions = {
 app.use(cookieParser())
 app.use(cors(corsOptions))
 app.use(express.json())
-<<<<<<< HEAD
 app.use(cookieParser)
-=======
->>>>>>> logout
 app.use(router)
 
 
