@@ -68,7 +68,7 @@ user_1["default"].statics.login = function (email, password) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.findOne({ email: email })
-                    // if user with the email exists then compare passowrds
+                    //  param if user with the email exists then compare passowrds
                 ];
                 case 1:
                     user = _a.sent();
