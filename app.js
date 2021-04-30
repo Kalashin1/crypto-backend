@@ -24,7 +24,7 @@ var corsOptions = {
 app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(router_1["default"]);
+app.use(router_1.router);
 // routes
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     .then(function (result) { return app.listen(process.env.PORT || PORT, function () { return console.log("app running on port " + (process.env.PORT || PORT)); }); })["catch"](function (err) { return console.log(err); });

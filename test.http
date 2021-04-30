@@ -1,4 +1,4 @@
-GET http://localhost:8080/
+GET http://localhost:3000/
 
 ###
 
@@ -15,7 +15,7 @@ credentials: true
 }
 ###
 
-POST http://localhost:8080/login
+POST http://localhost:3000/login
 Content-Type: application/json
 Accept: *
 credentials: true,

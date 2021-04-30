@@ -32,4 +32,4 @@ router.get('/', (req: express.Request, res: express.Response) => {
 })
 
 
-export default router
+export { router }

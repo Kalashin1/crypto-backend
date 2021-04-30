@@ -9,7 +9,7 @@ import { getUser } from './controllers/auth/validate-user'
 
 // OUR CUSTOM IMPORTS WILL SIT HERE
 // IMPORTING OUR DIFF ROUTERS
-import router from './router/router';
+import { router } from './router/router';
 
 // CREATING OUR SEVER APP WITH EXPRESS
 const app = express()
