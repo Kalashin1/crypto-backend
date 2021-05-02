@@ -15,6 +15,5 @@ router.post('/login', auth_cont_1.loginUserWithEmailAndPassword);
 router.get('/logout', auth_cont_1.logoutUser);
 router.get('/', function (req, res) {
     console.log('connected');
-    res.setHeader('Content-Type', 'text/html');
-    res.send('<h1>Hello World</h1>');
+    res.json({ message: 'connected' });
 });

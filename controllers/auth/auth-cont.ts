@@ -1,11 +1,7 @@
 // IMPORTING USER MODEL TO CREATE A USER
 import userModel from '../../data/models/user'
+import { web3 } from '../helper/web3Helper'
 
-// import the userInterface, allows us to type to a user
-import { userInterface } from '../helper/interface'
-
-// IMPORTING OTHER MODULES
-import * as mongoose from 'mongoose'
 import express from 'express'
 
 
@@ -36,17 +32,27 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
 
   // send the cookie back to the user agent
   res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // in production add secure:true
+
+  const ethWallet = web3.eth.accounts.decrypt(user.wallet.eth, password)
+
+  const address = web3.eth.Iban.toIban(ethWallet.address)
+
+  let balance = await web3.eth.getBalance(address)
+
+  ethWallet.balance = web3.utils.fromWei(balance, 'ether')
   
   // send some user data
+
   res.json({
     name: user.name, // Lastly we send back a json with the user details
     id: user._id,
     email: user.email,
-    phoneNumber: user.phoneNumber
+    phoneNumber: user.phoneNumber,
+    wallet: { ethWallet }
   }) 
  }
  catch (err) {
-  // console.log(err.message) // handles the error if ther is an error
+  console.log(err) // handles the error if ther is an error
   let errors = errorHandler(err) // send back the handled error to the frontend
   res.json(errors)
  }
@@ -58,16 +64,29 @@ const loginUserWithEmailAndPassword = async (req: express.Request, res: express.
   const { email, password } = req.body // retrieve email and password 
 
   try {
-    const user = await userModel.login(email, password) // login with email and password
+
+    const user  = await userModel.login(email, password) // login with email and password
 
     const token = createToken(user._id)       // create a token for that user
 
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // create a cookie to hold the jwt
 
-    res.json({name: user.name, id: user._id, email: user.email}) // send some of the user info back
+    const eth = user.wallet.eth
+
+    const address = web3.eth.Iban.toIban(eth.address)
+
+    let balance = await web3.eth.getBalance(address)
+    
+    eth.balance = web3.utils.fromWei(balance, 'ether')
+
+    console.log(balance)
+
+    res.json({name: user.name, id: user._id, email: user.email, wallet: { eth } }) // send some of the user info back
+  
 
   } 
   catch (err) {
+    console.log(err)
     const errors = errorHandler(err)
     res.status(400).json(errors)
   }

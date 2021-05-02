@@ -13,8 +13,8 @@ var app = express();
 // OUR APP WILL RUN ON THE PORT GIVEN BELOW
 var PORT = 3000;
 // THIS STRING IS THE LINK TO OUR MONGODB
-// const url = 'mongodb://localhost:27017/crypto' A%24L6cMmVN%23ndqd%21
-var url = 'mongodb+srv://kalashin:Kalashin1@cluster0.4umw1.gcp.mongodb.net/crypto?retryWrites=true&w=majority';
+var url = 'mongodb://localhost:27017/crypto'; // 
+// const url = 'mongodb+srv://kalashin:Kalashin1@cluster0.4umw1.gcp.mongodb.net/crypto?retryWrites=true&w=majority'
 var corsOptions = {
     origin: '*',
     credentials: true,

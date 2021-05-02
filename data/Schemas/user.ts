@@ -24,6 +24,9 @@ const userSchema:mongoose.Schema<userInterface> = new mongoose.Schema({
     type: Number,
     required: [true, 'please provide your phone number']
   },
+  wallet: {
+    type: Object
+  },
   secondaryEmail: {
     type: String
   },

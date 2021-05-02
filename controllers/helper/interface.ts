@@ -4,7 +4,8 @@ interface userInterface extends Document{
   name: any,
   email: any,
   phoneNumber: any,
-  password: any
+  password: any,
+  wallet: any
 }
 
 interface userModel extends Model<userInterface>{

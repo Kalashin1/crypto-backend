@@ -40,18 +40,24 @@ var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
 // IMPORT THE USER SCHEMA 
 var user_1 = require("../Schemas/user");
+var web3Helper_1 = require("../../controllers/helper/web3Helper");
 var saltRounds = 10;
 //HASHING USERS PASSWORD
 user_1["default"].pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a;
+        var eth, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     if (!(this.password.length < 15)) return [3 /*break*/, 2];
+                    eth = web3Helper_1.web3.eth.accounts.create();
+                    eth = web3Helper_1.web3.eth.accounts.encrypt(eth.privateKey, this.password);
+                    this.wallet = { eth: eth };
+                    // TODO hash the users password before we save it to the databse
                     _a = this;
                     return [4 /*yield*/, bcrypt.hash(this.password, saltRounds)];
                 case 1:
+                    // TODO hash the users password before we save it to the databse
                     _a.password = _b.sent();
                     next();
                     _b.label = 2;
@@ -64,7 +70,7 @@ user_1["default"].pre('save', function (next) {
 });
 user_1["default"].statics.login = function (email, password) {
     return __awaiter(this, void 0, void 0, function () {
-        var user, result;
+        var user, result, decryptedAccount;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.findOne({ email: email })
@@ -77,6 +83,8 @@ user_1["default"].statics.login = function (email, password) {
                 case 2:
                     result = _a.sent();
                     if (result) {
+                        decryptedAccount = web3Helper_1.web3.eth.accounts.decrypt(user.wallet.eth, password);
+                        user.wallet.eth = decryptedAccount;
                         return [2 /*return*/, user];
                     }
                     else {
