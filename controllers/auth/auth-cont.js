@@ -44,7 +44,7 @@ var jwt_handler_1 = require("../helper/jwt-handler");
 var error_handler_1 = require("../helper/error-handler");
 // CREATING A NEW USER
 var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, name, email, password, phoneNumber, user, token, ethWallet, address, balance, err_1, errors;
+    var _a, name, email, password, phoneNumber, user, token, ethWallet, err_1, errors;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -60,12 +60,11 @@ var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void
                 token = jwt_handler_1.createToken(user._id);
                 // send the cookie back to the user agent
                 res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // in production add secure:true
-                ethWallet = web3Helper_1.web3.eth.accounts.decrypt(user.wallet.eth, password);
-                address = web3Helper_1.web3.eth.Iban.toIban(ethWallet.address);
-                return [4 /*yield*/, web3Helper_1.web3.eth.getBalance(address)];
+                return [4 /*yield*/, web3Helper_1.decryptEthWalletAndGetBalance(user, password, false)
+                    // send some user data
+                ];
             case 3:
-                balance = _b.sent();
-                ethWallet.balance = web3Helper_1.web3.utils.fromWei(balance, 'ether');
+                ethWallet = _b.sent();
                 // send some user data
                 res.json({
                     name: user.name,
@@ -89,7 +88,7 @@ var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void
 exports.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
 // Login a user
 var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, user, token, eth, address, balance, err_2, errors;
+    var _a, email, password, user, token, eth, err_2, errors;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -105,14 +104,15 @@ var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 
                 token = jwt_handler_1.createToken(user._id) // create a token for that user
                 ;
                 res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // create a cookie to hold the jwt
-                eth = user.wallet.eth;
-                address = web3Helper_1.web3.eth.Iban.toIban(eth.address);
-                return [4 /*yield*/, web3Helper_1.web3.eth.getBalance(address)];
+                return [4 /*yield*/, web3Helper_1.decryptEthWalletAndGetBalance(user, password, true)];
             case 3:
-                balance = _b.sent();
-                eth.balance = web3Helper_1.web3.utils.fromWei(balance, 'ether');
-                console.log(balance);
-                res.json({ name: user.name, id: user._id, email: user.email, wallet: { eth: eth } }); // send some of the user info back
+                eth = _b.sent();
+                res.json({
+                    name: user.name,
+                    id: user._id,
+                    email: user.email,
+                    wallet: { eth: eth }
+                }); // send some of the user info back
                 return [3 /*break*/, 5];
             case 4:
                 err_2 = _b.sent();

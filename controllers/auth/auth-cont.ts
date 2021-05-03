@@ -1,6 +1,9 @@
 // IMPORTING USER MODEL TO CREATE A USER
 import userModel from '../../data/models/user'
-import { web3 } from '../helper/web3Helper'
+
+import { 
+  decryptEthWalletAndGetBalance 
+} from '../helper/web3Helper'
 
 import express from 'express'
 
@@ -33,13 +36,7 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
   // send the cookie back to the user agent
   res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // in production add secure:true
 
-  const ethWallet = web3.eth.accounts.decrypt(user.wallet.eth, password)
-
-  const address = web3.eth.Iban.toIban(ethWallet.address)
-
-  let balance = await web3.eth.getBalance(address)
-
-  ethWallet.balance = web3.utils.fromWei(balance, 'ether')
+  const ethWallet = await decryptEthWalletAndGetBalance(user, password, false)
   
   // send some user data
 
@@ -71,17 +68,14 @@ const loginUserWithEmailAndPassword = async (req: express.Request, res: express.
 
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // create a cookie to hold the jwt
 
-    const eth = user.wallet.eth
+    const eth = await decryptEthWalletAndGetBalance(user, password, true)
 
-    const address = web3.eth.Iban.toIban(eth.address)
-
-    let balance = await web3.eth.getBalance(address)
-    
-    eth.balance = web3.utils.fromWei(balance, 'ether')
-
-    console.log(balance)
-
-    res.json({name: user.name, id: user._id, email: user.email, wallet: { eth } }) // send some of the user info back
+    res.json({
+      name: user.name, 
+      id: user._id, 
+      email: user.email, 
+      wallet: { eth } 
+    }) // send some of the user info back
   
 
   } 
