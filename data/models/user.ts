@@ -9,6 +9,8 @@ import { userInterface, userModel } from '../../controllers/helper/interface'
 
 import { web3 } from '../../controllers/helper/web3Helper'
 
+import { createAndEncryptWallet } from '../../controllers/helper/btcHelper'
+
 const saltRounds = 10
 
 
@@ -24,7 +26,9 @@ userSchema.pre('save', async function(next){
 
     eth = web3.eth.accounts.encrypt(eth.privateKey, this.password)
 
-    this.wallet = { eth }
+    let btc = createAndEncryptWallet(this.password)
+
+    this.wallet = { eth, btc }
 
     // TODO hash the users password before we save it to the databse
 

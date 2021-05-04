@@ -40,18 +40,19 @@ exports.logoutUser = exports.loginUserWithEmailAndPassword = exports.createUserW
 // IMPORTING USER MODEL TO CREATE A USER
 var user_1 = require("../../data/models/user");
 var web3Helper_1 = require("../helper/web3Helper");
+var btcHelper_1 = require("../helper/btcHelper");
 var jwt_handler_1 = require("../helper/jwt-handler");
 var error_handler_1 = require("../helper/error-handler");
 // CREATING A NEW USER
 var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, name, email, password, phoneNumber, user, token, ethWallet, err_1, errors;
+    var _a, name, email, password, phoneNumber, user, token, ethWallet, btcWallet, err_1, errors;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, name = _a.name, email = _a.email, password = _a.password, phoneNumber = _a.phoneNumber;
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 4, , 5]);
+                _b.trys.push([1, 5, , 6]);
                 return [4 /*yield*/, user_1["default"].create({ name: name, email: email, password: password, phoneNumber: phoneNumber })
                     // CREATE A COOKIE TO HOLD THE JWT
                 ];
@@ -60,35 +61,38 @@ var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void
                 token = jwt_handler_1.createToken(user._id);
                 // send the cookie back to the user agent
                 res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // in production add secure:true
-                return [4 /*yield*/, web3Helper_1.decryptEthWalletAndGetBalance(user, password, false)
-                    // send some user data
-                ];
+                return [4 /*yield*/, web3Helper_1.decryptEthWalletAndGetBalance(user, password, false)];
             case 3:
                 ethWallet = _b.sent();
+                return [4 /*yield*/, btcHelper_1.decryptBtcWallet(user, password)
+                    // send some user data
+                ];
+            case 4:
+                btcWallet = _b.sent();
                 // send some user data
                 res.json({
                     name: user.name,
                     id: user._id,
                     email: user.email,
                     phoneNumber: user.phoneNumber,
-                    wallet: { ethWallet: ethWallet }
+                    wallet: { ethWallet: ethWallet, btcWallet: btcWallet }
                 });
-                return [3 /*break*/, 5];
-            case 4:
+                return [3 /*break*/, 6];
+            case 5:
                 err_1 = _b.sent();
                 console.log(err_1); // handles the error if ther is an error
                 errors = error_handler_1["default"](err_1) // send back the handled error to the frontend
                 ;
                 res.json(errors);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); };
 exports.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
 // Login a user
 var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, user, token, eth, err_2, errors;
+    var _a, email, password, user, token, eth, btc, err_2, errors;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -96,7 +100,7 @@ var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 
                 , email = _a.email, password = _a.password;
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 4, , 5]);
+                _b.trys.push([1, 5, , 6]);
                 return [4 /*yield*/, user_1["default"].login(email, password)]; // login with email and password
             case 2:
                 user = _b.sent() // login with email and password
@@ -107,20 +111,23 @@ var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 
                 return [4 /*yield*/, web3Helper_1.decryptEthWalletAndGetBalance(user, password, true)];
             case 3:
                 eth = _b.sent();
+                return [4 /*yield*/, btcHelper_1.decryptBtcWallet(user, password)];
+            case 4:
+                btc = _b.sent();
                 res.json({
                     name: user.name,
                     id: user._id,
                     email: user.email,
-                    wallet: { eth: eth }
+                    wallet: { eth: eth, btc: btc }
                 }); // send some of the user info back
-                return [3 /*break*/, 5];
-            case 4:
+                return [3 /*break*/, 6];
+            case 5:
                 err_2 = _b.sent();
                 console.log(err_2);
                 errors = error_handler_1["default"](err_2);
                 res.status(400).json(errors);
-                return [3 /*break*/, 5];
-            case 5: return [2 /*return*/];
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
         }
     });
 }); };

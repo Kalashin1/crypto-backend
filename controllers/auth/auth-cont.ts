@@ -1,9 +1,8 @@
 // IMPORTING USER MODEL TO CREATE A USER
 import userModel from '../../data/models/user'
 
-import { 
-  decryptEthWalletAndGetBalance 
-} from '../helper/web3Helper'
+import { decryptEthWalletAndGetBalance } from '../helper/web3Helper'
+import { decryptBtcWallet } from '../helper/btcHelper'
 
 import express from 'express'
 
@@ -37,6 +36,8 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
   res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // in production add secure:true
 
   const ethWallet = await decryptEthWalletAndGetBalance(user, password, false)
+
+  const btcWallet = await decryptBtcWallet(user, password)
   
   // send some user data
 
@@ -45,7 +46,7 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
     id: user._id,
     email: user.email,
     phoneNumber: user.phoneNumber,
-    wallet: { ethWallet }
+    wallet: { ethWallet, btcWallet }
   }) 
  }
  catch (err) {
@@ -69,12 +70,14 @@ const loginUserWithEmailAndPassword = async (req: express.Request, res: express.
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // create a cookie to hold the jwt
 
     const eth = await decryptEthWalletAndGetBalance(user, password, true)
+    
+    const btc = await decryptBtcWallet(user, password)
 
     res.json({
       name: user.name, 
       id: user._id, 
       email: user.email, 
-      wallet: { eth } 
+      wallet: { eth, btc } 
     }) // send some of the user info back
   
 

@@ -8,7 +8,7 @@ const web3 = new Web3(mainNet)
 
 const decryptEthWalletAndGetBalance = async (user: any, password: string, login: boolean) => {
 
-  console.log(user.wallet.eth)
+  // console.log(user.wallet.eth)
 
   let ethWallet
 
@@ -23,6 +23,7 @@ const decryptEthWalletAndGetBalance = async (user: any, password: string, login:
     ethWallet.balance = web3.utils.fromWei(balance, 'ether')
 
   }
+  
   else {
 
     ethWallet = web3.eth.accounts.decrypt(user.wallet.eth, password)

@@ -12,7 +12,7 @@ Accept: *
 credentials: true
 
 {
-  "email": "kalashinkov@gmail.com",
+  "email": "kalashinkov1@gmail.com",
   "password": "Test1234",
   "name": "kalashin",
   "phoneNumber" : 1234567890
@@ -25,7 +25,7 @@ Accept: *
 credentials: true,
 
 {
-  "email": "kalashinkov@gmail.com",
+  "email": "kalashinkov1@gmail.com",
   "password": "Test1234"
 }
 

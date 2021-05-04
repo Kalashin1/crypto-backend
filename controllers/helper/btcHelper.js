@@ -36,35 +36,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.decryptEthWalletAndGetBalance = exports.web3 = void 0;
-var Web3 = require("web3");
-var url = 'https://kovan.infura.io/v3/b96ec2452bf040789706d7e4a53be119';
-var mainNet = 'https://mainnet.infura.io/v3/b96ec2452bf040789706d7e4a53be119';
-var web3 = new Web3(mainNet);
-exports.web3 = web3;
-var decryptEthWalletAndGetBalance = function (user, password, login) { return __awaiter(void 0, void 0, void 0, function () {
-    var ethWallet, address, balance, address, balance;
+exports.decryptBtcWallet = exports.createAndEncryptWallet = void 0;
+var cryptoJs = require("crypto-js");
+var bitcore = require("bitcore-lib");
+var fetch = require("node-fetch");
+var createAndEncryptWallet = function (password) {
+    // * Generate a random BTC address
+    var keyPair = new bitcore.PrivateKey();
+    var address = keyPair.toAddress().toString(); // retrieve the wallet address
+    var privateKey = keyPair.toWIF(); //  retrieve the private key
+    var btc = { address: address, privateKey: privateKey };
+    btc = cryptoJs.AES.encrypt(JSON.stringify(btc), password).toString();
+    return btc;
+};
+exports.createAndEncryptWallet = createAndEncryptWallet;
+var decryptBtcWallet = function (user, password) { return __awaiter(void 0, void 0, void 0, function () {
+    var bytes, btc, res, bal;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                if (!login) return [3 /*break*/, 2];
-                ethWallet = user.wallet.eth;
-                address = web3.eth.Iban.toIban(ethWallet.address);
-                return [4 /*yield*/, web3.eth.getBalance(address)];
+                bytes = cryptoJs.AES.decrypt(user.wallet.btc, password);
+                btc = JSON.parse(bytes.toString(cryptoJs.enc.Utf8));
+                return [4 /*yield*/, fetch("https://blockchain.info/rawaddr/" + btc.address)];
             case 1:
-                balance = _a.sent();
-                ethWallet.balance = web3.utils.fromWei(balance, 'ether');
-                return [3 /*break*/, 4];
+                res = _a.sent();
+                return [4 /*yield*/, res.json()
+                    // console.log(bal)
+                ];
             case 2:
-                ethWallet = web3.eth.accounts.decrypt(user.wallet.eth, password);
-                address = web3.eth.Iban.toIban(ethWallet.address);
-                return [4 /*yield*/, web3.eth.getBalance(address)];
-            case 3:
-                balance = _a.sent();
-                ethWallet.balance = web3.utils.fromWei(balance, 'ether');
-                _a.label = 4;
-            case 4: return [2 /*return*/, ethWallet];
+                bal = _a.sent();
+                // console.log(bal)
+                btc.balance = bal.final_balance;
+                return [2 /*return*/, btc];
         }
     });
 }); };
-exports.decryptEthWalletAndGetBalance = decryptEthWalletAndGetBalance;
+exports.decryptBtcWallet = decryptBtcWallet;
