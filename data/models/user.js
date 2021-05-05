@@ -41,29 +41,41 @@ var bcrypt = require("bcrypt");
 // IMPORT THE USER SCHEMA 
 var user_1 = require("../Schemas/user");
 var web3Helper_1 = require("../../controllers/helper/web3Helper");
+// functions for creating and encrypting some wallets
+// BTC
 var btcHelper_1 = require("../../controllers/helper/btcHelper");
+// LTC
+var ltcHelper_1 = require("../../controllers/helper/ltcHelper");
+// DOGE
+var dogeHelper_1 = require("../../controllers/helper/dogeHelper");
 var saltRounds = 10;
 //HASHING USERS PASSWORD
 user_1["default"].pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function () {
-        var eth, btc, _a;
+        var eth, btc, ltc, doge, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    if (!(this.password.length < 15)) return [3 /*break*/, 2];
+                    if (!(this.password.length < 15)) return [3 /*break*/, 4];
                     eth = web3Helper_1.web3.eth.accounts.create();
                     eth = web3Helper_1.web3.eth.accounts.encrypt(eth.privateKey, this.password);
-                    btc = btcHelper_1.createAndEncryptWallet(this.password);
-                    this.wallet = { eth: eth, btc: btc };
-                    // TODO hash the users password before we save it to the databse
+                    btc = btcHelper_1.createAndEncryptBtcWallet(this.password);
+                    return [4 /*yield*/, ltcHelper_1.createAndEncryptLtcWallet(this.password)];
+                case 1:
+                    ltc = _b.sent();
+                    return [4 /*yield*/, dogeHelper_1.createAndEncryptDogeWallet(this.password)];
+                case 2:
+                    doge = _b.sent();
+                    this.wallet = { eth: eth, btc: btc, ltc: ltc, doge: doge };
+                    // * hash the users password before we save it to the databse
                     _a = this;
                     return [4 /*yield*/, bcrypt.hash(this.password, saltRounds)];
-                case 1:
-                    // TODO hash the users password before we save it to the databse
+                case 3:
+                    // * hash the users password before we save it to the databse
                     _a.password = _b.sent();
                     next();
-                    _b.label = 2;
-                case 2:
+                    _b.label = 4;
+                case 4:
                     next();
                     return [2 /*return*/];
             }

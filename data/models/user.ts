@@ -9,7 +9,16 @@ import { userInterface, userModel } from '../../controllers/helper/interface'
 
 import { web3 } from '../../controllers/helper/web3Helper'
 
-import { createAndEncryptWallet } from '../../controllers/helper/btcHelper'
+// functions for creating and encrypting some wallets
+
+// BTC
+import { createAndEncryptBtcWallet } from '../../controllers/helper/btcHelper'
+
+// LTC
+import { createAndEncryptLtcWallet } from '../../controllers/helper/ltcHelper'
+
+// DOGE
+import { createAndEncryptDogeWallet } from '../../controllers/helper/dogeHelper'
 
 const saltRounds = 10
 
@@ -20,17 +29,21 @@ userSchema.pre('save', async function(next){
 
   if(this.password.length < 15){
 
-    // TODO before encrypt password, create an ETH wallet, encrypt it with the password and save it to the user
+    // * before encrypt password, create an ETH wallet, encrypt it with the password and save it to the user
 
     let eth = web3.eth.accounts.create()       
 
     eth = web3.eth.accounts.encrypt(eth.privateKey, this.password)
 
-    let btc = createAndEncryptWallet(this.password)
+    let btc = createAndEncryptBtcWallet(this.password)
 
-    this.wallet = { eth, btc }
+    let ltc = await createAndEncryptLtcWallet(this.password)
 
-    // TODO hash the users password before we save it to the databse
+    let doge = await createAndEncryptDogeWallet(this.password)
+
+    this.wallet = { eth, btc, ltc, doge }
+
+    // * hash the users password before we save it to the databse
 
     this.password = await bcrypt.hash(this.password, saltRounds)
 

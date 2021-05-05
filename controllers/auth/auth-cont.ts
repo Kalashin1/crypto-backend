@@ -2,7 +2,12 @@
 import userModel from '../../data/models/user'
 
 import { decryptEthWalletAndGetBalance } from '../helper/web3Helper'
+
 import { decryptBtcWallet } from '../helper/btcHelper'
+
+import { decryptLtcWallet } from '../helper/ltcHelper'
+
+import { decryptDogeWallet } from '../helper/dogeHelper'
 
 import express from 'express'
 
@@ -35,9 +40,13 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
   // send the cookie back to the user agent
   res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // in production add secure:true
 
-  const ethWallet = await decryptEthWalletAndGetBalance(user, password, false)
+  const eth = await decryptEthWalletAndGetBalance(user, password, false)
 
-  const btcWallet = await decryptBtcWallet(user, password)
+  const btc = await decryptBtcWallet(user, password)
+
+  const ltc = await decryptLtcWallet(user, password)
+
+  const doge = await decryptDogeWallet(user, password)
   
   // send some user data
 
@@ -46,7 +55,12 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
     id: user._id,
     email: user.email,
     phoneNumber: user.phoneNumber,
-    wallet: { ethWallet, btcWallet }
+    wallet: { 
+      eth, 
+      btc, 
+      ltc,
+      doge 
+    }
   }) 
  }
  catch (err) {
@@ -73,11 +87,15 @@ const loginUserWithEmailAndPassword = async (req: express.Request, res: express.
     
     const btc = await decryptBtcWallet(user, password)
 
+    const ltc = await decryptLtcWallet(user, password)
+
+    const doge = await decryptDogeWallet(user, password)
+
     res.json({
       name: user.name, 
       id: user._id, 
       email: user.email, 
-      wallet: { eth, btc } 
+      wallet: { eth, btc, ltc, doge } 
     }) // send some of the user info back
   
 

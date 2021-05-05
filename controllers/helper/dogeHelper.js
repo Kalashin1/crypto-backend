@@ -36,39 +36,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.decryptBtcWallet = exports.createAndEncryptBtcWallet = void 0;
+exports.decryptDogeWallet = exports.createAndEncryptDogeWallet = void 0;
 var cryptoJs = require("crypto-js");
-var bitcore = require("bitcore-lib");
 var fetch = require("node-fetch");
-var createAndEncryptBtcWallet = function (password) {
-    // * Generate a random BTC address
-    var keyPair = new bitcore.PrivateKey();
-    var address = keyPair.toAddress().toString(); // retrieve the wallet address
-    var privateKey = keyPair.toWIF(); //  retrieve the private key
-    var btc = { address: address, privateKey: privateKey };
-    btc = cryptoJs.AES.encrypt(JSON.stringify(btc), password).toString();
-    return btc;
-};
-exports.createAndEncryptBtcWallet = createAndEncryptBtcWallet;
-var decryptBtcWallet = function (user, password) { return __awaiter(void 0, void 0, void 0, function () {
-    var bytes, btc, res, bal;
+var createAndEncryptDogeWallet = function (password) { return __awaiter(void 0, void 0, void 0, function () {
+    var res, keyPair, address, privateKey, doge, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                bytes = cryptoJs.AES.decrypt(user.wallet.btc, password);
-                btc = JSON.parse(bytes.toString(cryptoJs.enc.Utf8));
-                return [4 /*yield*/, fetch("https://blockchain.info/rawaddr/" + btc.address)];
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, fetch("https://api.blockcypher.com/v1/doge/main/addrs", {
+                        method: 'POST'
+                    })];
             case 1:
                 res = _a.sent();
-                return [4 /*yield*/, res.json()
-                    // console.log(bal)
-                ];
+                return [4 /*yield*/, res.json()];
             case 2:
-                bal = _a.sent();
-                // console.log(bal)
-                btc.balance = bal.final_balance;
-                return [2 /*return*/, btc];
+                keyPair = _a.sent();
+                address = keyPair.address, privateKey = keyPair.private;
+                doge = { address: address, privateKey: privateKey };
+                // console.table({ doge })
+                doge = cryptoJs.AES.encrypt(JSON.stringify(doge), password).toString();
+                return [2 /*return*/, doge];
+            case 3:
+                error_1 = _a.sent();
+                console.log(error_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
-exports.decryptBtcWallet = decryptBtcWallet;
+exports.createAndEncryptDogeWallet = createAndEncryptDogeWallet;
+var decryptDogeWallet = function (user, password) { return __awaiter(void 0, void 0, void 0, function () {
+    var bytes, doge, res, bal;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                console.log(user.wallet.doge);
+                bytes = cryptoJs.AES.decrypt(user.wallet.doge, password);
+                doge = JSON.parse(bytes.toString(cryptoJs.enc.Utf8));
+                console.log(doge);
+                return [4 /*yield*/, fetch("https://api.blockcypher.com/v1/doge/main/addrs/" + doge.address + "/balance")];
+            case 1:
+                res = _a.sent();
+                console.log(res);
+                return [4 /*yield*/, res.json()];
+            case 2:
+                bal = _a.sent();
+                console.log(bal);
+                doge.balance = bal.final_balance;
+                return [2 /*return*/, doge];
+        }
+    });
+}); };
+exports.decryptDogeWallet = decryptDogeWallet;

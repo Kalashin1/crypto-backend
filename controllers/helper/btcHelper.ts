@@ -5,7 +5,7 @@ import * as bitcore from 'bitcore-lib'
 
 import * as fetch from 'node-fetch'
 
-const createAndEncryptWallet = (password: string) => {
+const createAndEncryptBtcWallet = (password: string) => {
 
   // * Generate a random BTC address
   const keyPair = new bitcore.PrivateKey()
@@ -42,4 +42,4 @@ const decryptBtcWallet = async (user: any, password: string) => {
 
 }
 
-export { createAndEncryptWallet, decryptBtcWallet }
+export { createAndEncryptBtcWallet, decryptBtcWallet }
