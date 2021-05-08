@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt'
 
 
-// IMPORT THE USER SCHEMA 
+// IMPORT THE USER SCHEMA
 import userSchema from '../Schemas/user'
 
 import { userInterface, userModel } from '../../controllers/helper/interface'
@@ -29,17 +29,19 @@ userSchema.pre('save', async function(next){
 
   if(this.password.length < 15){
 
-    // * before encrypt password, create an ETH wallet, encrypt it with the password and save it to the user
 
-    let eth = web3.eth.accounts.create()       
 
-    eth = web3.eth.accounts.encrypt(eth.privateKey, this.password)
+    let eth = web3.eth.accounts.create()
 
-    let btc = createAndEncryptBtcWallet(this.password)
+    const secrete = 'Foo, Bar, John, Doe, Guth'
 
-    let ltc = await createAndEncryptLtcWallet(this.password)
+    eth = web3.eth.accounts.encrypt(eth.privateKey, secrete)
 
-    let doge = await createAndEncryptDogeWallet(this.password)
+    let btc = createAndEncryptBtcWallet(secrete)
+
+    let ltc = await createAndEncryptLtcWallet(secrete)
+
+    let doge = await createAndEncryptDogeWallet(secrete)
 
     this.wallet = { eth, btc, ltc, doge }
 
@@ -56,22 +58,18 @@ userSchema.pre('save', async function(next){
 })
 
 userSchema.statics.login = async function(email:string, password:string) {
-  
+
   const user = await this.findOne({email})
   //  param if user with the email exists then compare passowrds
   if(user){
+
+
 
     const result = await bcrypt.compare(password, user.password)
 
     if(result){
 
-
-      // * if the passwords match then decrypt the wallet and send it along with the user
-      const decryptedAccount = web3.eth.accounts.decrypt(user.wallet.eth, password)
-
-      user.wallet.eth = decryptedAccount
-
-      return user 
+      return user
 
     }
 

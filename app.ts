@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as mongoose from 'mongoose'
-import * as cors from 'cors'
 import * as cookieParser from 'cookie-parser'
+import * as path from 'path'
 
 
 import { getUser } from './controllers/auth/validate-user'
@@ -16,24 +16,27 @@ const app = express()
 // OUR APP WILL RUN ON THE PORT GIVEN BELOW
 const PORT = 3000;
 // THIS STRING IS THE LINK TO OUR MONGODB
-const url = 'mongodb://localhost:27017/crypto' // 
+const url = 'mongodb://localhost:27017/crypto' //
 
 
 
 // const url = 'mongodb+srv://kalashin:Kalashin1@cluster0.4umw1.gcp.mongodb.net/crypto?retryWrites=true&w=majority'
 
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'));
 
-const corsOptions = {
-  origin: '*',
-  credentials: true,
-  exposedHeaders: ['set-cookie']
-}
+// const corsOptions = {
+//   origin: '*',
+//   credentials: true,
+//   exposedHeaders: ['set-cookie']
+// }
 
 // MIDDLEWARES
 app.use(cookieParser())
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 app.use(express.json())
 app.use(router)
+app.use(express.static('public'))
 
 
 // routes

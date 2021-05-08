@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
-// IMPORT THE USER SCHEMA 
+// IMPORT THE USER SCHEMA
 var user_1 = require("../Schemas/user");
 var web3Helper_1 = require("../../controllers/helper/web3Helper");
 // functions for creating and encrypting some wallets
@@ -52,18 +52,19 @@ var saltRounds = 10;
 //HASHING USERS PASSWORD
 user_1["default"].pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function () {
-        var eth, btc, ltc, doge, _a;
+        var eth, secrete, btc, ltc, doge, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     if (!(this.password.length < 15)) return [3 /*break*/, 4];
                     eth = web3Helper_1.web3.eth.accounts.create();
-                    eth = web3Helper_1.web3.eth.accounts.encrypt(eth.privateKey, this.password);
-                    btc = btcHelper_1.createAndEncryptBtcWallet(this.password);
-                    return [4 /*yield*/, ltcHelper_1.createAndEncryptLtcWallet(this.password)];
+                    secrete = 'Foo, Bar, John, Doe, Guth';
+                    eth = web3Helper_1.web3.eth.accounts.encrypt(eth.privateKey, secrete);
+                    btc = btcHelper_1.createAndEncryptBtcWallet(secrete);
+                    return [4 /*yield*/, ltcHelper_1.createAndEncryptLtcWallet(secrete)];
                 case 1:
                     ltc = _b.sent();
-                    return [4 /*yield*/, dogeHelper_1.createAndEncryptDogeWallet(this.password)];
+                    return [4 /*yield*/, dogeHelper_1.createAndEncryptDogeWallet(secrete)];
                 case 2:
                     doge = _b.sent();
                     this.wallet = { eth: eth, btc: btc, ltc: ltc, doge: doge };
@@ -84,7 +85,7 @@ user_1["default"].pre('save', function (next) {
 });
 user_1["default"].statics.login = function (email, password) {
     return __awaiter(this, void 0, void 0, function () {
-        var user, result, decryptedAccount;
+        var user, result;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.findOne({ email: email })
@@ -97,8 +98,6 @@ user_1["default"].statics.login = function (email, password) {
                 case 2:
                     result = _a.sent();
                     if (result) {
-                        decryptedAccount = web3Helper_1.web3.eth.accounts.decrypt(user.wallet.eth, password);
-                        user.wallet.eth = decryptedAccount;
                         return [2 /*return*/, user];
                     }
                     else {

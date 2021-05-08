@@ -39,22 +39,19 @@ exports.__esModule = true;
 exports.logoutUser = exports.loginUserWithEmailAndPassword = exports.createUserWithEmailAndPassword = void 0;
 // IMPORTING USER MODEL TO CREATE A USER
 var user_1 = require("../../data/models/user");
-var web3Helper_1 = require("../helper/web3Helper");
-var btcHelper_1 = require("../helper/btcHelper");
-var ltcHelper_1 = require("../helper/ltcHelper");
-var dogeHelper_1 = require("../helper/dogeHelper");
 var jwt_handler_1 = require("../helper/jwt-handler");
 var error_handler_1 = require("../helper/error-handler");
 // CREATING A NEW USER
 var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, name, email, password, phoneNumber, user, token, eth, btc, ltc, doge, err_1, errors;
+    var _a, name, email, password, phoneNumber, user, token, err_1, errors;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, name = _a.name, email = _a.email, password = _a.password, phoneNumber = _a.phoneNumber;
+                console.log(req.body);
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 7, , 8]);
+                _b.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, user_1["default"].create({ name: name, email: email, password: password, phoneNumber: phoneNumber })
                     // CREATE A COOKIE TO HOLD THE JWT
                 ];
@@ -63,57 +60,32 @@ var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void
                 token = jwt_handler_1.createToken(user._id);
                 // send the cookie back to the user agent
                 res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // in production add secure:true
-                return [4 /*yield*/, web3Helper_1.decryptEthWalletAndGetBalance(user, password, false)];
+                res.status(200).end();
+                return [3 /*break*/, 4];
             case 3:
-                eth = _b.sent();
-                return [4 /*yield*/, btcHelper_1.decryptBtcWallet(user, password)];
-            case 4:
-                btc = _b.sent();
-                return [4 /*yield*/, ltcHelper_1.decryptLtcWallet(user, password)];
-            case 5:
-                ltc = _b.sent();
-                return [4 /*yield*/, dogeHelper_1.decryptDogeWallet(user, password)
-                    // send some user data
-                ];
-            case 6:
-                doge = _b.sent();
-                // send some user data
-                res.json({
-                    name: user.name,
-                    id: user._id,
-                    email: user.email,
-                    phoneNumber: user.phoneNumber,
-                    wallet: {
-                        eth: eth,
-                        btc: btc,
-                        ltc: ltc,
-                        doge: doge
-                    }
-                });
-                return [3 /*break*/, 8];
-            case 7:
                 err_1 = _b.sent();
                 console.log(err_1); // handles the error if ther is an error
                 errors = error_handler_1["default"](err_1) // send back the handled error to the frontend
                 ;
-                res.json(errors);
-                return [3 /*break*/, 8];
-            case 8: return [2 /*return*/];
+                res.status(400).json(errors);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
 exports.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
 // Login a user
 var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, user, token, eth, btc, ltc, doge, err_2, errors;
+    var _a, email, password, user, token, err_2, errors;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = req.body // retrieve email and password 
+                _a = req.body // retrieve email and password
                 , email = _a.email, password = _a.password;
+                console.log(req.body);
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 7, , 8]);
+                _b.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, user_1["default"].login(email, password)]; // login with email and password
             case 2:
                 user = _b.sent() // login with email and password
@@ -121,32 +93,15 @@ var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 
                 token = jwt_handler_1.createToken(user._id) // create a token for that user
                 ;
                 res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // create a cookie to hold the jwt
-                return [4 /*yield*/, web3Helper_1.decryptEthWalletAndGetBalance(user, password, true)];
+                res.status(200).end();
+                return [3 /*break*/, 4];
             case 3:
-                eth = _b.sent();
-                return [4 /*yield*/, btcHelper_1.decryptBtcWallet(user, password)];
-            case 4:
-                btc = _b.sent();
-                return [4 /*yield*/, ltcHelper_1.decryptLtcWallet(user, password)];
-            case 5:
-                ltc = _b.sent();
-                return [4 /*yield*/, dogeHelper_1.decryptDogeWallet(user, password)];
-            case 6:
-                doge = _b.sent();
-                res.json({
-                    name: user.name,
-                    id: user._id,
-                    email: user.email,
-                    wallet: { eth: eth, btc: btc, ltc: ltc, doge: doge }
-                }); // send some of the user info back
-                return [3 /*break*/, 8];
-            case 7:
                 err_2 = _b.sent();
                 console.log(err_2);
                 errors = error_handler_1["default"](err_2);
                 res.status(400).json(errors);
-                return [3 /*break*/, 8];
-            case 8: return [2 /*return*/];
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };

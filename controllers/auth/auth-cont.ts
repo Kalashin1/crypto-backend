@@ -28,52 +28,34 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
 
   const { name, email, password, phoneNumber } = req.body
 
+  console.log(req.body)
+
  try{
 
    // IF THE USER IS CREATED SUCCESSFULLY CREATE A JWT WITH THEIR ID
   const user = await userModel.create({name, email, password, phoneNumber})
 
-  
+
   // CREATE A COOKIE TO HOLD THE JWT
   const token = createToken(user._id)
 
   // send the cookie back to the user agent
   res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // in production add secure:true
 
-  const eth = await decryptEthWalletAndGetBalance(user, password, false)
-
-  const btc = await decryptBtcWallet(user, password)
-
-  const ltc = await decryptLtcWallet(user, password)
-
-  const doge = await decryptDogeWallet(user, password)
-  
-  // send some user data
-
-  res.json({
-    name: user.name, // Lastly we send back a json with the user details
-    id: user._id,
-    email: user.email,
-    phoneNumber: user.phoneNumber,
-    wallet: { 
-      eth, 
-      btc, 
-      ltc,
-      doge 
-    }
-  }) 
+  res.status(200).end()
  }
  catch (err) {
   console.log(err) // handles the error if ther is an error
   let errors = errorHandler(err) // send back the handled error to the frontend
-  res.json(errors)
+  res.status(400).json(errors)
  }
 }
 
 // Login a user
 const loginUserWithEmailAndPassword = async (req: express.Request, res: express.Response) => {
-  
-  const { email, password } = req.body // retrieve email and password 
+
+  const { email, password } = req.body // retrieve email and password
+  console.log(req.body)
 
   try {
 
@@ -83,23 +65,9 @@ const loginUserWithEmailAndPassword = async (req: express.Request, res: express.
 
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // create a cookie to hold the jwt
 
-    const eth = await decryptEthWalletAndGetBalance(user, password, true)
-    
-    const btc = await decryptBtcWallet(user, password)
+    res.status(200).end()
 
-    const ltc = await decryptLtcWallet(user, password)
-
-    const doge = await decryptDogeWallet(user, password)
-
-    res.json({
-      name: user.name, 
-      id: user._id, 
-      email: user.email, 
-      wallet: { eth, btc, ltc, doge } 
-    }) // send some of the user info back
-  
-
-  } 
+  }
   catch (err) {
     console.log(err)
     const errors = errorHandler(err)
@@ -122,7 +90,7 @@ const logoutUser = async (req: express.Request, res: express.Response) => {
   }
 }
 
-export { 
+export {
   createUserWithEmailAndPassword,  // signup function
   loginUserWithEmailAndPassword,  // login function
   logoutUser                     // logout function
