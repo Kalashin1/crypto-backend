@@ -5,6 +5,19 @@
     <title></title>
   </head>
   <body>
-    <h1>This is the dashborad</h1>
+    <h1>This is the dashborad home</h1>
+
+    <script type="text/javascript">
+      console.log('hello')
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        const res = await fetch('http://localhost:3000/user')
+
+        const data = await res.json()
+
+        console.log(data)
+
+      })
+    </script>
   </body>
 </html>
