@@ -121,16 +121,6 @@
       let errors = { }
 
 
-      const validateEmail = (email) => {
-        const regExp = /^[\w]+(\.[\w]+)*@([\w]+\.)+[a-z]{2,7}$/
-        return regExp.test(email)
-      }
-
-      const validatePassword = (password) => {
-        const regExp = /([a-z]?[A-Z]+[a-z]+[0-9]+){8,}/
-        return regExp.test(password)
-      }
-
 
       const form = document.querySelector('#login-form')
 
