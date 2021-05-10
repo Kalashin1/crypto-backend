@@ -8,6 +8,8 @@ var validate_user_1 = require("./controllers/auth/validate-user");
 // OUR CUSTOM IMPORTS WILL SIT HERE
 // IMPORTING OUR DIFF ROUTERS
 var router_1 = require("./router/router");
+// IMPORTING TRANSACTION ROUTER
+var transaction_router_1 = require("./router/transaction-router");
 // CREATING OUR SEVER APP WITH EXPRESS
 var app = express();
 // OUR APP WILL RUN ON THE PORT GIVEN BELOW
@@ -23,10 +25,15 @@ app.set('views', path.join(__dirname, 'views'));
 //   exposedHeaders: ['set-cookie']
 // }
 // MIDDLEWARES
+//  COOKIE PARSER
 app.use(cookieParser());
-// app.use(cors(corsOptions))
+// JSON PARSER
 app.use(express.json());
+// AUTH ROUTER
 app.use(router_1.router);
+// TRANSACTION ROUTER
+app.use(transaction_router_1.router);
+// PUBLIC FOLDER
 app.use(express.static('public'));
 // routes
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })

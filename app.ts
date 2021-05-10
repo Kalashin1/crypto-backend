@@ -8,8 +8,12 @@ import { getUser } from './controllers/auth/validate-user'
 
 
 // OUR CUSTOM IMPORTS WILL SIT HERE
+
 // IMPORTING OUR DIFF ROUTERS
 import { router } from './router/router';
+
+// IMPORTING TRANSACTION ROUTER
+import { router as transactionRouter } from './router/transaction-router'
 
 // CREATING OUR SEVER APP WITH EXPRESS
 const app = express()
@@ -32,10 +36,15 @@ app.set('views', path.join(__dirname, 'views'));
 // }
 
 // MIDDLEWARES
+//  COOKIE PARSER
 app.use(cookieParser())
-// app.use(cors(corsOptions))
+// JSON PARSER
 app.use(express.json())
+// AUTH ROUTER
 app.use(router)
+// TRANSACTION ROUTER
+app.use(transactionRouter)
+// PUBLIC FOLDER
 app.use(express.static('public'))
 
 
