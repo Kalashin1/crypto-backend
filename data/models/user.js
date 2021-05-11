@@ -109,5 +109,20 @@ user_1["default"].statics.login = function (email, password) {
         });
     });
 };
+user_1["default"].statics.createOffer = function (_id, offer) {
+    return __awaiter(this, void 0, void 0, function () {
+        var user;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, mongoose.model('user').findById(_id)];
+                case 1:
+                    user = _a.sent();
+                    user === null || user === void 0 ? void 0 : user.offers.push(offer);
+                    console.log(user === null || user === void 0 ? void 0 : user.offers);
+                    return [2 /*return*/, user === null || user === void 0 ? void 0 : user.offers];
+            }
+        });
+    });
+};
 var userModel = mongoose.model('user', user_1["default"]);
 exports["default"] = userModel;

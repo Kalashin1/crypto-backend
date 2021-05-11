@@ -37,6 +37,7 @@ var userSchema = new mongoose.Schema({
     },
     state: {
         type: String
-    }
+    },
+    offers: []
 });
 exports["default"] = userSchema;

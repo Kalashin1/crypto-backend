@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt'
 // IMPORT THE USER SCHEMA
 import userSchema from '../Schemas/user'
 
-import { userInterface, userModel } from '../../controllers/helper/interface'
+import { userInterface, userModel, Offer } from '../../controllers/helper/interface'
 
 import { web3 } from '../../controllers/helper/web3Helper'
 
@@ -83,6 +83,14 @@ userSchema.statics.login = async function(email:string, password:string) {
 
   throw Error('incorrect email, no user exists for this email')
 
+}
+
+
+userSchema.statics.createOffer = async function (_id, offer: Offer) {
+  const user = await mongoose.model<userInterface, userModel>('user').findById(_id);
+  user?.offers.push(offer)
+  console.log(user?.offers)
+  return user?.offers
 }
 
 const userModel = mongoose.model<userInterface, userModel>('user',userSchema)

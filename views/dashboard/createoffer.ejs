@@ -32,7 +32,7 @@
         <%- include('../components/sidenav') %>
         <div class="flex flex-col flex-1 w-full">
           <%- include('../components/top') %>
-          <%- include('../components/wallets-header') %>
+          <%- include('../components/offer-form') %>
 
           
           
@@ -40,42 +40,28 @@
         </div>
     </div>
     <script type="text/javascript">
-      console.log('hello')
+      const createOfferForm = document.querySelector('#create-offer');
 
-      document.addEventListener('DOMContentLoaded', async () => {
-        const res = await fetch('http://localhost:3000/user')
+      createOfferForm.onsubmit = async (e) => {
+        e.preventDefault()
+        const accepting = document.querySelector('#accept')
+        const exchanging = document.querySelector('#reject')
+        const min = document.querySelector('#min')
+        const max = document.querySelector('#max')
+        const quote = document.querySelector('#quote')
+
+        const res = await fetch('/create-offer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accepting, exchanging, min, max, quote})
+        })
 
         if (res.ok) {
-
           const data = await res.json()
-
-          const btc = document.querySelector('#btc .amount')
-          const btcAddress = document.querySelector('#btc .address')
-
-          const eth = document.querySelector('#eth .amount')
-          const ethAddress = document.querySelector('#eth .address')
-
-          const ltc = document.querySelector('#ltc .amount')
-          const ltcAddress = document.querySelector('#ltc .address')
-
-          const doge = document.querySelector('#doge .amount')
-          const dogeAddress = document.querySelector('#doge .address')
-
-          btc.textContent = data.wallet.btc.balance
-          btcAddress.innerHTML = data.wallet.btc.address.slice(0, 15) + '...'
-
-          eth.textContent = data.wallet.eth.balance
-          ethAddress.innerHTML = data.wallet.eth.address.slice(0, 15) + '...'
-
-          ltc.textContent = data.wallet.ltc.balance
-          ltcAddress.innerHTML = data.wallet.ltc.address.slice(0, 15) + '...'
-
-          doge.textContent = data.wallet.doge.balance
-          dogeAddress.innerHTML = data.wallet.doge.address.slice(0, 15) + '...'
-
         }
 
-      })
+        console.log(await res.json())
+      }
     </script>
   </body>
 </html>

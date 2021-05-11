@@ -1,10 +1,11 @@
 import { Document, Model } from 'mongoose'
 
-interface offer {
+interface Offer {
   accepting: string,
   exchanging: string,
   min: number,
-  max: number
+  max: number,
+  quote: string
 }
 interface userInterface extends Document{
   name: string,
@@ -12,11 +13,12 @@ interface userInterface extends Document{
   phoneNumber: any,
   password: string,
   wallet: any,
-  offers: offer[]
+  offers: Offer[]
 }
 
 interface userModel extends Model<userInterface>{
-  login(email:string, password: string): userInterface
+  login(email:string, password: string): userInterface,
+  createOffer(id:string, offer:Offer): Offer
 }
 
 
@@ -39,4 +41,4 @@ interface transactionInterface extends Document {
   status: 'pending' | 'failed' | 'successful'
 }
 
-export { userInterface, userModel, transactionInterface }
+export { userInterface, userModel, transactionInterface, Offer }
