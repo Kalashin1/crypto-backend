@@ -36,14 +36,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.createOffer = void 0;
+exports.editProfile = exports.createOffer = void 0;
 var user_1 = require("../../data/models/user");
+// create an offer for the user
 var createOffer = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, min, max, accepting, exchanging, quote, id, offerObj, offer;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, min = _a.min, max = _a.max, accepting = _a.accepting, exchanging = _a.exchanging, quote = _a.quote, id = _a.id;
+                console.log(req.body);
                 offerObj = { min: min, max: max, accepting: accepting, exchanging: exchanging, quote: quote };
                 return [4 /*yield*/, user_1["default"].createOffer(id, offerObj)];
             case 1:
@@ -54,3 +56,19 @@ var createOffer = function (req, res) { return __awaiter(void 0, void 0, void 0,
     });
 }); };
 exports.createOffer = createOffer;
+// edit the users info
+var editProfile = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, address, state, country, name, phoneNumber, secondaryEmail, id, user;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, address = _a.address, state = _a.state, country = _a.country, name = _a.name, phoneNumber = _a.phoneNumber, secondaryEmail = _a.secondaryEmail, id = _a.id;
+                return [4 /*yield*/, user_1["default"].editProfile(id, { address: address, state: state, country: country, name: name, phoneNumber: phoneNumber, secondaryEmail: secondaryEmail })];
+            case 1:
+                user = _b.sent();
+                res.json(user);
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.editProfile = editProfile;

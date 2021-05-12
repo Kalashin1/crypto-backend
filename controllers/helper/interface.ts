@@ -7,18 +7,35 @@ interface Offer {
   max: number,
   quote: string
 }
+
+interface profileEdit {
+  name?: string, 
+  phoneNumber?: any,
+  state?: string,
+  address?: string,
+  country?: string,
+  secondaryEmail?: string
+}
+
+
 interface userInterface extends Document{
   name: string,
   email: string,
   phoneNumber: any,
   password: string,
   wallet: any,
-  offers: Offer[]
+  offers: Offer[],
+  secondaryEmail: string,
+  address: string,
+  displayImage: string,
+  country: string,
+  state: string
 }
 
 interface userModel extends Model<userInterface>{
   login(email:string, password: string): userInterface,
-  createOffer(id:string, offer:Offer): Offer
+  createOffer(id:string, offer:Offer): Offer,
+  editProfile(id: string, obj: profileEdit): userInterface
 }
 
 
@@ -41,4 +58,4 @@ interface transactionInterface extends Document {
   status: 'pending' | 'failed' | 'successful'
 }
 
-export { userInterface, userModel, transactionInterface, Offer }
+export { userInterface, userModel, transactionInterface, Offer, profileEdit }

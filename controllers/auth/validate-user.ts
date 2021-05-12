@@ -57,7 +57,20 @@ const getUser = (req: express.Request, res: express.Response) => {
 
         const doge = await decryptDogeWallet(user, secrete)
 
-        res.json({ name: user?.name, email: user?.email, id: user?._id, wallet: {eth, btc, ltc, doge} })
+        console.log(user.address)
+
+        res.json({ 
+          name: user?.name, 
+          email: user?.email, 
+          offers: user?.offers, 
+          id: user?._id,
+          wallet: {eth, btc, ltc, doge},
+          secondaryEmail: user?.secondaryEmail,
+          phoneNumber: user.phoneNumber,
+          address: user.address,
+          state: user.state,
+          country: user.country
+        })
 
       }
     })

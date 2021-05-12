@@ -9,7 +9,7 @@ import {
   logoutUser
  } from '../controllers/auth/auth-cont'
 
-import { createOffer } from '../controllers/user/user'
+import { createOffer, editProfile } from '../controllers/user/user'
 
  // validating and obtaining user modules
  import { validateUser } from '../controllers/auth/validate-user'
@@ -52,10 +52,17 @@ router.get('/dashboard/index', (req: express.Request, res: express.Response) => 
   res.render('dashboard/index',{ message: 'connected' })
 })
 
-router.get('/create-offer', (req: express.Request, res: express.Response) => {
+router.get('/dashboard/create-offer', (req: express.Request, res: express.Response) => {
+  console.log('created')
   res.render('dashboard/createoffer')
 })
 
 router.post('/create-offer', createOffer)
+
+router.get('/dashboard/profile', (req: express.Request, res: express.Response) => {
+  res.render('dashboard/profile')
+})
+
+router.post('/dashboard/profile', editProfile)
 
 export { router }

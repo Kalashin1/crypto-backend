@@ -119,7 +119,34 @@ user_1["default"].statics.createOffer = function (_id, offer) {
                     user = _a.sent();
                     user === null || user === void 0 ? void 0 : user.offers.push(offer);
                     console.log(user === null || user === void 0 ? void 0 : user.offers);
+                    return [4 /*yield*/, (user === null || user === void 0 ? void 0 : user.save())];
+                case 2:
+                    _a.sent();
                     return [2 /*return*/, user === null || user === void 0 ? void 0 : user.offers];
+            }
+        });
+    });
+};
+user_1["default"].statics.editProfile = function (_id, obj) {
+    return __awaiter(this, void 0, void 0, function () {
+        var user, address, country, state, secondaryEmail, phoneNumber, name;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, mongoose.model('user').findById(_id)];
+                case 1:
+                    user = _a.sent();
+                    address = obj.address, country = obj.country, state = obj.state, secondaryEmail = obj.secondaryEmail, phoneNumber = obj.phoneNumber, name = obj.name;
+                    user.address = address !== null && address !== void 0 ? address : user.address;
+                    user.country = country !== null && country !== void 0 ? country : user.country;
+                    user.state = state !== null && state !== void 0 ? state : user.state;
+                    user.secondaryEmail = secondaryEmail !== null && secondaryEmail !== void 0 ? secondaryEmail : user.secondaryEmail;
+                    user.phoneNumber = phoneNumber !== null && phoneNumber !== void 0 ? phoneNumber : user.phoneNumber;
+                    user.name = name !== null && name !== void 0 ? name : user.name;
+                    return [4 /*yield*/, user.save()];
+                case 2:
+                    _a.sent();
+                    console.log(user.address);
+                    return [2 /*return*/, user];
             }
         });
     });

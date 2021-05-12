@@ -38,6 +38,9 @@ var userSchema = new mongoose.Schema({
     state: {
         type: String
     },
+    address: {
+        type: String
+    },
     offers: []
 });
 exports["default"] = userSchema;

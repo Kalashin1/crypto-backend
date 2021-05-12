@@ -84,7 +84,12 @@ router.get('/dashboard/index', function (req, res) {
     console.log('connected');
     res.render('dashboard/index', { message: 'connected' });
 });
-router.get('/create-offer', function (req, res) {
+router.get('/dashboard/create-offer', function (req, res) {
+    console.log('created');
     res.render('dashboard/createoffer');
 });
 router.post('/create-offer', user_1.createOffer);
+router.get('/dashboard/profile', function (req, res) {
+    res.render('dashboard/profile');
+});
+router.post('/dashboard/profile', user_1.editProfile);

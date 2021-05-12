@@ -91,7 +91,19 @@ var getUser = function (req, res) {
                         return [4 /*yield*/, dogeHelper_1.decryptDogeWallet(user, secrete)];
                     case 6:
                         doge = _a.sent();
-                        res.json({ name: user === null || user === void 0 ? void 0 : user.name, email: user === null || user === void 0 ? void 0 : user.email, id: user === null || user === void 0 ? void 0 : user._id, wallet: { eth: eth, btc: btc, ltc: ltc, doge: doge } });
+                        console.log(user.address);
+                        res.json({
+                            name: user === null || user === void 0 ? void 0 : user.name,
+                            email: user === null || user === void 0 ? void 0 : user.email,
+                            offers: user === null || user === void 0 ? void 0 : user.offers,
+                            id: user === null || user === void 0 ? void 0 : user._id,
+                            wallet: { eth: eth, btc: btc, ltc: ltc, doge: doge },
+                            secondaryEmail: user === null || user === void 0 ? void 0 : user.secondaryEmail,
+                            phoneNumber: user.phoneNumber,
+                            address: user.address,
+                            state: user.state,
+                            country: user.country
+                        });
                         _a.label = 7;
                     case 7: return [2 /*return*/];
                 }

@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Login | legatoex - cryptocurrency exchange</title>
+    <title>Create Offer | legatoex - cryptocurrency exchange</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"/>
     <link rel="stylesheet" href="/assets/css/tailwind.output.css" />
@@ -40,28 +40,36 @@
         </div>
     </div>
     <script type="text/javascript">
-      const createOfferForm = document.querySelector('#create-offer');
+      document.addEventListener('DOMContentLoaded', async () => {
+        const res = await fetch('http://localhost:3000/user')
+        const user = await res.json()
+        console.log(user)
+        const createOfferForm = document.querySelector('#create-offer');
 
-      createOfferForm.onsubmit = async (e) => {
-        e.preventDefault()
-        const accepting = document.querySelector('#accept')
-        const exchanging = document.querySelector('#reject')
-        const min = document.querySelector('#min')
-        const max = document.querySelector('#max')
-        const quote = document.querySelector('#quote')
+        createOfferForm.onsubmit = async (e) => {
+          e.preventDefault()
+          const accepting = document.querySelector('#accept').value
+          const exchanging = document.querySelector('#exchange').value
+          const min = document.querySelector('#min').value
+          const max = document.querySelector('#max').value
+          const quote = document.querySelector('#quote').value
 
-        const res = await fetch('/create-offer', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ accepting, exchanging, min, max, quote})
-        })
+          console.log(accepting, exchanging, min, max, quote)
 
-        if (res.ok) {
-          const data = await res.json()
+          const resp = await fetch('/create-offer', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accepting, exchanging, min, max, quote, id: user.id })
+          })
+
+          if (resp.ok) {
+            const data = await resp.json()
+            console.log(data)
+          }
+
+          // console.log(await resp.json())
         }
-
-        console.log(await res.json())
-      }
+      })
     </script>
   </body>
 </html>

@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt'
 // IMPORT THE USER SCHEMA
 import userSchema from '../Schemas/user'
 
-import { userInterface, userModel, Offer } from '../../controllers/helper/interface'
+import { userInterface, userModel, Offer, profileEdit } from '../../controllers/helper/interface'
 
 import { web3 } from '../../controllers/helper/web3Helper'
 
@@ -90,7 +90,25 @@ userSchema.statics.createOffer = async function (_id, offer: Offer) {
   const user = await mongoose.model<userInterface, userModel>('user').findById(_id);
   user?.offers.push(offer)
   console.log(user?.offers)
+  await user?.save()
   return user?.offers
+}
+
+
+userSchema.statics.editProfile = async function (_id: string, obj: profileEdit) {
+  const user = await mongoose.model<userInterface, userModel>('user').findById(_id)
+  const { address, country, state, secondaryEmail, phoneNumber, name } = obj
+  user.address = address ?? user.address
+
+  user.country = country ?? user.country
+  user.state = state ?? user.state
+  user.secondaryEmail = secondaryEmail ?? user.secondaryEmail
+  user.phoneNumber = phoneNumber ?? user.phoneNumber
+  user.name = name ?? user.name
+
+  await user.save()
+    console.log(user.address)
+  return user
 }
 
 const userModel = mongoose.model<userInterface, userModel>('user',userSchema)

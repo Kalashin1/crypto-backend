@@ -39,6 +39,9 @@ const userSchema:mongoose.Schema<userInterface> = new mongoose.Schema({
   state: {
     type: String
   },
+  address: {
+    type: String
+  },
   offers: [],
 })
 
