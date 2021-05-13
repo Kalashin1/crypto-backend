@@ -10,6 +10,8 @@ var validate_user_1 = require("./controllers/auth/validate-user");
 var router_1 = require("./router/router");
 // IMPORTING TRANSACTION ROUTER
 var transaction_router_1 = require("./router/transaction-router");
+// IMPORTING OFFER ROUTER
+var offer_router_1 = require("./router/offer-router");
 // CREATING OUR SEVER APP WITH EXPRESS
 var app = express();
 // OUR APP WILL RUN ON THE PORT GIVEN BELOW
@@ -33,6 +35,8 @@ app.use(express.json());
 app.use(router_1.router);
 // TRANSACTION ROUTER
 app.use(transaction_router_1.router);
+// OFFER ROUTER
+app.use(offer_router_1.router);
 // PUBLIC FOLDER
 app.use(express.static('public'));
 // routes

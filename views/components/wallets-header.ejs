@@ -42,12 +42,12 @@
           <p
             class="address mb-2 text-xs font-medium text-gray-600 dark:text-gray-400"
           >
-            
+
           </p>
           <p
             class="amount text-lg font-semibold text-gray-700 dark:text-gray-200"
           >
-            
+
           </p>
         </div>
       </div>
@@ -71,12 +71,12 @@
           <p
             class="address mb-2 text-xs overflow-hidden font-medium text-gray-600 dark:text-gray-400"
           >
-            
+
           </p>
           <p
             class="amount text-lg font-semibold text-gray-700 dark:text-gray-200"
           >
-            
+
           </p>
         </div>
       </div>
@@ -99,12 +99,12 @@
           <p
             class="address mb-2 text-xs font-medium text-gray-600 dark:text-gray-400"
           >
-            
+
           </p>
           <p
             class="amount text-lg font-semibold text-gray-700 dark:text-gray-200"
           >
-            
+
           </p>
         </div>
       </div>
@@ -128,29 +128,22 @@
           <p
             class="address mb-2 text-xs font-medium text-gray-600 dark:text-gray-400"
           >
-            
+
           </p>
           <p
             class="amount text-lg font-semibold text-gray-700 dark:text-gray-200"
           >
-            
+
           </p>
         </div>
       </div>
     </div>
   </div>
-  <div class="container grid px-6 mx-auto">
-    <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-      Offers
-    </h4>
+  <div class="container grid px-6 my-3">
     <!-- TODO: create a component that will hold the offers from the person <div></div> -->
-    <div class="flex flex-col flex-wrap mb-4 space-y-4 md:flex-row md:items-end md:space-x-4">
-      <!-- Divs are used just to display the examples. Use only the button. -->
-      <div>
-        <a href="create-offer" class="px-10 py-4 font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-          Create an Offer
-        </a>
-      </div>
+    <div>
+      <%- include('./offers') %>
     </div>
+
   </div>
 </main>

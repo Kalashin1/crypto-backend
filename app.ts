@@ -15,6 +15,9 @@ import { router } from './router/router';
 // IMPORTING TRANSACTION ROUTER
 import { router as transactionRouter } from './router/transaction-router'
 
+// IMPORTING OFFER ROUTER
+import { router as offerRouter } from './router/offer-router'
+
 // CREATING OUR SEVER APP WITH EXPRESS
 const app = express()
 // OUR APP WILL RUN ON THE PORT GIVEN BELOW
@@ -44,6 +47,8 @@ app.use(express.json())
 app.use(router)
 // TRANSACTION ROUTER
 app.use(transactionRouter)
+// OFFER ROUTER
+app.use(offerRouter)
 // PUBLIC FOLDER
 app.use(express.static('public'))
 

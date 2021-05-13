@@ -56,15 +56,32 @@
 
           console.log(accepting, exchanging, min, max, quote)
 
-          const resp = await fetch('/create-offer', {
+          // const resp = await fetch('/create-offer', {
+          //   method: 'POST',
+          //   headers: { 'Content-Type': 'application/json' },
+          //   body: JSON.stringify({ accepting, exchanging, min, max, quote, id: user.id })
+          // })
+
+          // const data = await resp.json()
+          //   console.log(data)
+
+          const res = await fetch('/offers/create', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ accepting, exchanging, min, max, quote, id: user.id })
+            headers:  { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accepting, exchanging, min, max, quote, 
+              owner: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                phoneNumber: user.phoneNumber
+              }
+            })
           })
 
-          if (resp.ok) {
-            const data = await resp.json()
+          if (res.ok) {
+            const data = await res.json()
             console.log(data)
+            createOfferForm.reset()
           }
 
           // console.log(await resp.json())

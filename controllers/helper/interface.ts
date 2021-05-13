@@ -1,11 +1,16 @@
 import { Document, Model } from 'mongoose'
 
-interface Offer {
+interface Offer extends Document {
   accepting: string,
   exchanging: string,
   min: number,
   max: number,
   quote: string
+  owner?: { name: string, phoneNumber: number, email: string, id: any }
+}
+
+interface offerModel extends Model<Offer> {
+
 }
 
 interface profileEdit {
@@ -58,4 +63,4 @@ interface transactionInterface extends Document {
   status: 'pending' | 'failed' | 'successful'
 }
 
-export { userInterface, userModel, transactionInterface, Offer, profileEdit }
+export { userInterface, userModel, transactionInterface, Offer, offerModel, profileEdit }
