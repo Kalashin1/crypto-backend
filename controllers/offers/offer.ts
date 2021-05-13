@@ -17,7 +17,7 @@ const createOffer = async (req: express.Request, res: express.Response) => {
 
 const getAllOffers = async (req: express.Request, res: express.Response) => {
   const offers = await offerModel.find({})
-  res.json(offers)
+  res.status(200).json(offers)
 }
 
 const getOffersWithUserId = async (req: express.Request, res: express.Response) => {

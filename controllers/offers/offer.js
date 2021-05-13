@@ -68,7 +68,7 @@ var getAllOffers = function (req, res) { return __awaiter(void 0, void 0, void 0
             case 0: return [4 /*yield*/, offers_1.offerModel.find({})];
             case 1:
                 offers = _a.sent();
-                res.json(offers);
+                res.status(200).json(offers);
                 return [2 /*return*/];
         }
     });
