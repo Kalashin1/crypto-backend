@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+  <head>
+
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Create Offer | legatoex - cryptocurrency exchange</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"/>
+    <link rel="stylesheet" href="/assets/css/tailwind.output.css" />
+    <script
+    src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+    defer
+    ></script>
+    <script src="/assets/js/init-alpine.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
+    />
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+    defer
+    ></script>
+    <script src="/assets/js/charts-lines.js" defer></script>
+    <script src="/assets/js/charts-pie.js" defer></script>
+  </head>
+  <body>
+    <div class="flex h-screen bg-gray-50 dark:bg-gray-900"
+      :class="{ 'overflow-hidden': isSideMenuOpen }">
+        <%- include('../components/sidenav') %>
+        <div class="flex flex-col flex-1 w-full">
+          <%- include('../components/top') %>
+          <%- include('../components/offer-form') %>
+
+          
+          
+
+        </div>
+    </div>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', async () => {
+        const res = await fetch('http://localhost:3000/user')
+        const user = await res.json()
+        console.log(user)
+        const createOfferForm = document.querySelector('#create-offer');
+
+        createOfferForm.onsubmit = async (e) => {
+          e.preventDefault()
+          const accepting = document.querySelector('#accept').value
+          const exchanging = document.querySelector('#exchange').value
+          const min = document.querySelector('#min').value
+          const max = document.querySelector('#max').value
+          const quote = document.querySelector('#quote').value
+
+          console.log(accepting, exchanging, min, max, quote)
+
+          // const resp = await fetch('/create-offer', {
+          //   method: 'POST',
+          //   headers: { 'Content-Type': 'application/json' },
+          //   body: JSON.stringify({ accepting, exchanging, min, max, quote, id: user.id })
+          // })
+
+          // const data = await resp.json()
+          //   console.log(data)
+
+          const res = await fetch('/offers/create', {
+            method: 'POST',
+            headers:  { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accepting, exchanging, min, max, quote, 
+              owner: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                phoneNumber: user.phoneNumber
+              }
+            })
+          })
+
+          if (res.ok) {
+            const data = await res.json()
+            console.log(data)
+            createOfferForm.reset()
+          }
+
+          // console.log(await resp.json())
+        }
+      })
+    </script>
+  </body>
+</html>

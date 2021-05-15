@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Peer to peer cryptocurrency exchange market  | legatoex - cryptocurrency exchange</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"/>
+    <link rel="stylesheet" href="/assets/css/tailwind.output.css" />
+    <script
+    src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+    defer
+    ></script>
+    <script src="/assets/js/init-alpine.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
+    />
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+    defer
+    ></script>
+    <script src="/assets/js/charts-lines.js" defer></script>
+    <script src="/assets/js/charts-pie.js" defer></script>
+  </head>
+  <body>
+    <div class="flex h-screen bg-gray-50 dark:bg-gray-900"
+      :class="{ 'overflow-hidden': isSideMenuOpen }">
+        <%- include('../components/sidenav') %>
+        <div class="flex flex-col flex-1 w-full">
+          <%- include('../components/top') %>
+          <%- include('../components/market-card') %>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+      $(document).ready(async () => {
+        try {
+          const offers = await $.getJSON('/offers')
+          offers.forEach(offer => {
+            $('.card').append(`
+              <div class="min-w-0 my-4 p-4 bg-white rounded-lg grid md:grid-cols-2 shadow-xs dark:bg-gray-800">
+                <div>
+                  <h4 class="mb-4 font-semibold text-gray-600 dark:text-gray-300">
+                    ${offer.owner.name}
+                  </h4>
+                  <h4 class="mb-4 font-semibold text-gray-600 dark:text-gray-300">
+                    Exchanging : ${offer.exchanging}
+                  </h4>
+                  <h4 class="mb-4 font-semibold text-gray-600 dark:text-gray-300">
+                    For : ${offer.accepting}
+                  </h4>
+                  <h4 class="mb-4 text-sm font-semibold text-gray-600 dark:text-gray-300">
+                    Min : ${offer.min}
+                  </h4>
+                  <h4 class="mb-4 text-sm font-semibold text-gray-600 dark:text-gray-300">
+                    Max : ${offer.max}
+                  </h4>
+                  <button class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    Exchange
+                  </button>
+                </div>
+
+                <div class="px-4 py-4 my-4">
+                  <a style="cursor:pointer" class="mb-4 mr-4 font-semibold text-gray-600 dark:text-gray-300">
+                    <i class="material-icons">phone</i>
+                  </a>
+                  <a style="cursor:pointer" class="mb-4 font-semibold text-gray-600 dark:text-gray-300">
+                    <i class="material-icons">mail-outline</i>
+                  </a>
+
+                </div>
+
+              </div>
+            `)
+          })
+        } catch (e) {
+          console.log(e)
+        }
+      })
+    </script>
+  </body>
+</html>
