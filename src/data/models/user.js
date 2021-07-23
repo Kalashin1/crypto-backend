@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,70 +54,63 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-var mongoose = require("mongoose");
-var bcrypt = require("bcrypt");
-// IMPORT THE USER SCHEMA
-var user_1 = require("../Schemas/user");
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var mongoose = __importStar(require("mongoose"));
+var bcrypt = __importStar(require("bcrypt"));
+var user_1 = __importDefault(require("../Schemas/user"));
 var web3Helper_1 = require("../../controllers/helper/web3Helper");
-// functions for creating and encrypting some wallets
-// BTC
 var btcHelper_1 = require("../../controllers/helper/btcHelper");
-// LTC
 var ltcHelper_1 = require("../../controllers/helper/ltcHelper");
-// DOGE
 var dogeHelper_1 = require("../../controllers/helper/dogeHelper");
 var saltRounds = 10;
-//HASHING USERS PASSWORD
-user_1["default"].pre('save', function (next) {
+user_1.default.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function () {
         var eth, secrete, btc, ltc, doge, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    if (!(this.password.length < 15)) return [3 /*break*/, 4];
+                    if (!(this.password.length < 15)) return [3, 4];
                     eth = web3Helper_1.web3.eth.accounts.create();
                     secrete = 'Foo, Bar, John, Doe, Guth';
                     eth = web3Helper_1.web3.eth.accounts.encrypt(eth.privateKey, secrete);
                     btc = btcHelper_1.createAndEncryptBtcWallet(secrete);
-                    return [4 /*yield*/, ltcHelper_1.createAndEncryptLtcWallet(secrete)];
+                    return [4, ltcHelper_1.createAndEncryptLtcWallet(secrete)];
                 case 1:
                     ltc = _b.sent();
-                    return [4 /*yield*/, dogeHelper_1.createAndEncryptDogeWallet(secrete)];
+                    return [4, dogeHelper_1.createAndEncryptDogeWallet(secrete)];
                 case 2:
                     doge = _b.sent();
                     this.wallet = { eth: eth, btc: btc, ltc: ltc, doge: doge };
-                    // * hash the users password before we save it to the databse
                     _a = this;
-                    return [4 /*yield*/, bcrypt.hash(this.password, saltRounds)];
+                    return [4, bcrypt.hash(this.password, saltRounds)];
                 case 3:
-                    // * hash the users password before we save it to the databse
                     _a.password = _b.sent();
                     next();
                     _b.label = 4;
                 case 4:
                     next();
-                    return [2 /*return*/];
+                    return [2];
             }
         });
     });
 });
-user_1["default"].statics.login = function (email, password) {
+user_1.default.statics.login = function (email, password) {
     return __awaiter(this, void 0, void 0, function () {
         var user, result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, this.findOne({ email: email })
-                    //  param if user with the email exists then compare passowrds
-                ];
+                case 0: return [4, this.findOne({ email: email })];
                 case 1:
                     user = _a.sent();
-                    if (!user) return [3 /*break*/, 3];
-                    return [4 /*yield*/, bcrypt.compare(password, user.password)];
+                    if (!user) return [3, 3];
+                    return [4, bcrypt.compare(password, user.password)];
                 case 2:
                     result = _a.sent();
                     if (result) {
-                        return [2 /*return*/, user];
+                        return [2, user];
                     }
                     else {
                         throw Error('incorrect password');
@@ -109,30 +121,30 @@ user_1["default"].statics.login = function (email, password) {
         });
     });
 };
-user_1["default"].statics.createOffer = function (_id, offer) {
+user_1.default.statics.createOffer = function (_id, offer) {
     return __awaiter(this, void 0, void 0, function () {
         var user;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, mongoose.model('user').findById(_id)];
+                case 0: return [4, mongoose.model('user').findById(_id)];
                 case 1:
                     user = _a.sent();
                     user === null || user === void 0 ? void 0 : user.trades.push(offer);
                     console.log(user === null || user === void 0 ? void 0 : user.trades);
-                    return [4 /*yield*/, (user === null || user === void 0 ? void 0 : user.save())];
+                    return [4, (user === null || user === void 0 ? void 0 : user.save())];
                 case 2:
                     _a.sent();
-                    return [2 /*return*/, user === null || user === void 0 ? void 0 : user.trades];
+                    return [2, user === null || user === void 0 ? void 0 : user.trades];
             }
         });
     });
 };
-user_1["default"].statics.editProfile = function (_id, obj) {
+user_1.default.statics.editProfile = function (_id, obj) {
     return __awaiter(this, void 0, void 0, function () {
         var user, country, state, secondaryEmail, phoneNumber, name, currency;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, mongoose.model('user').findById(_id)];
+                case 0: return [4, mongoose.model('user').findById(_id)];
                 case 1:
                     user = _a.sent();
                     country = obj.country, state = obj.state, secondaryEmail = obj.secondaryEmail, phoneNumber = obj.phoneNumber, name = obj.name, currency = obj.currency;
@@ -142,14 +154,14 @@ user_1["default"].statics.editProfile = function (_id, obj) {
                     user.phoneNumber = phoneNumber !== null && phoneNumber !== void 0 ? phoneNumber : user.phoneNumber;
                     user.name = name !== null && name !== void 0 ? name : user.name;
                     user.currency = currency !== null && currency !== void 0 ? currency : user.currency;
-                    return [4 /*yield*/, user.save()];
+                    return [4, user.save()];
                 case 2:
                     _a.sent();
                     console.log(user);
-                    return [2 /*return*/, user];
+                    return [2, user];
             }
         });
     });
 };
-var userModel = mongoose.model('user', user_1["default"]);
-exports["default"] = userModel;
+var userModel = mongoose.model('user', user_1.default);
+exports.default = userModel;

@@ -10,15 +10,13 @@ var validate_user_1 = require("./controllers/auth/validate-user");
 var router_1 = require("./router/router");
 // IMPORTING TRANSACTION ROUTER
 var transaction_router_1 = require("./router/transaction-router");
-// IMPORTING OFFER ROUTER
-var offer_router_1 = require("./router/offer-router");
 // CREATING OUR SEVER APP WITH EXPRESS
 var app = express();
 // OUR APP WILL RUN ON THE PORT GIVEN BELOW
 var PORT = 3000;
 // THIS STRING IS THE LINK TO OUR MONGODB
-var url = 'mongodb://localhost:27017/crypto'; //
-// const url = 'mongodb+srv://kalashin:Kalashin1@cluster0.4umw1.gcp.mongodb.net/crypto?retryWrites=true&w=majority'
+// const url = 'mongodb://localhost:27017/crypto' //
+var url = 'mongodb+srv://kalashin:Kalashin1@cluster0.4umw1.gcp.mongodb.net/crypto?retryWrites=true&w=majority';
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 // const corsOptions = {
@@ -35,8 +33,6 @@ app.use(express.json());
 app.use(router_1.router);
 // TRANSACTION ROUTER
 app.use(transaction_router_1.router);
-// OFFER ROUTER
-app.use(offer_router_1.router);
 // PUBLIC FOLDER
 app.use(express.static('public'));
 // routes

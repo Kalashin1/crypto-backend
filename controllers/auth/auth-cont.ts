@@ -42,7 +42,7 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
   // send the cookie back to the user agent
   res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // in production add secure:true
 
-  res.status(200).end()
+  res.status(200).json(user)
  }
  catch (err) {
   console.log(err) // handles the error if ther is an error
@@ -65,7 +65,7 @@ const loginUserWithEmailAndPassword = async (req: express.Request, res: express.
 
     res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // create a cookie to hold the jwt
 
-    res.status(200).end()
+    res.status(200).end(JSON.stringify(user))
 
   }
   catch (err) {

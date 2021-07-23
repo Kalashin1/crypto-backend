@@ -35,7 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOffersWithUserId = exports.deleteOffer = exports.getAllOffers = exports.createOffer = void 0;
 var offers_1 = require("../../data/models/offers");
 var createOffer = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -47,16 +47,16 @@ var createOffer = function (req, res) { return __awaiter(void 0, void 0, void 0,
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, offers_1.offerModel.create(offerObj)];
+                return [4, offers_1.offerModel.create(offerObj)];
             case 2:
                 offer = _a.sent();
                 res.json(offer);
-                return [3 /*break*/, 4];
+                return [3, 4];
             case 3:
                 err_1 = _a.sent();
                 console.log(err_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3, 4];
+            case 4: return [2];
         }
     });
 }); };
@@ -65,11 +65,11 @@ var getAllOffers = function (req, res) { return __awaiter(void 0, void 0, void 0
     var offers;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, offers_1.offerModel.find({})];
+            case 0: return [4, offers_1.offerModel.find({})];
             case 1:
                 offers = _a.sent();
                 res.status(200).json(offers);
-                return [2 /*return*/];
+                return [2];
         }
     });
 }); };
@@ -84,19 +84,19 @@ var getOffersWithUserId = function (req, res) { return __awaiter(void 0, void 0,
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, offers_1.offerModel.find()];
+                return [4, offers_1.offerModel.find()];
             case 2:
                 offers = _a.sent();
                 offers = offers.filter(function (offer) { return offer.owner.id == id; });
                 console.log(offers);
                 res.status(200).json(offers);
-                return [3 /*break*/, 4];
+                return [3, 4];
             case 3:
                 err_2 = _a.sent();
                 console.log(err_2);
                 res.status(400).json({ meesage: err_2.message });
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3, 4];
+            case 4: return [2];
         }
     });
 }); };
@@ -110,19 +110,19 @@ var deleteOffer = function (req, res) { return __awaiter(void 0, void 0, void 0,
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, offers_1.offerModel.findOneAndDelete({ _id: _id })];
+                return [4, offers_1.offerModel.findOneAndDelete({ _id: _id })];
             case 2:
                 deletedOffer = _a.sent();
                 statusMessage = 'successful';
                 res.status(200).json({ statusMessage: statusMessage, deletedOffer: deletedOffer });
-                return [3 /*break*/, 4];
+                return [3, 4];
             case 3:
                 err_3 = _a.sent();
                 console.log(err_3);
                 statusMessage = 'failed';
                 res.status(400).json({ statusMessage: statusMessage, errMessage: err_3.message });
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3, 4];
+            case 4: return [2];
         }
     });
 }); };

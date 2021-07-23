@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.offerModel = void 0;
 var mongoose_1 = require("mongoose");
 var offer_1 = require("../Schemas/offer");

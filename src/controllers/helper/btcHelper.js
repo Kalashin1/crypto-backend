@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,22 +54,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-exports.editProfile = void 0;
-var user_1 = require("../../data/models/user");
-// edit the users info
-var editProfile = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, currency, state, country, name, phoneNumber, secondaryEmail, id, user;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.decryptBtcWallet = exports.createAndEncryptBtcWallet = void 0;
+var cryptoJs = __importStar(require("crypto-js"));
+var bitcore = __importStar(require("bitcore-lib"));
+var fetch = __importStar(require("node-fetch"));
+var createAndEncryptBtcWallet = function (password) {
+    var keyPair = new bitcore.PrivateKey();
+    var address = keyPair.toAddress().toString();
+    var privateKey = keyPair.toWIF();
+    var btc = { address: address, privateKey: privateKey };
+    btc = cryptoJs.AES.encrypt(JSON.stringify(btc), password).toString();
+    return btc;
+};
+exports.createAndEncryptBtcWallet = createAndEncryptBtcWallet;
+var decryptBtcWallet = function (user, password) { return __awaiter(void 0, void 0, void 0, function () {
+    var bytes, btc, res, bal;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _a = req.body, currency = _a.currency, state = _a.state, country = _a.country, name = _a.name, phoneNumber = _a.phoneNumber, secondaryEmail = _a.secondaryEmail, id = _a.id;
-                return [4 /*yield*/, user_1["default"].editProfile(id, { currency: currency, state: state, country: country, name: name, phoneNumber: phoneNumber, secondaryEmail: secondaryEmail })];
+                bytes = cryptoJs.AES.decrypt(user.wallet.btc, password);
+                btc = JSON.parse(bytes.toString(cryptoJs.enc.Utf8));
+                return [4, fetch("https://blockchain.info/rawaddr/" + btc.address)];
             case 1:
-                user = _b.sent();
-                res.json(user);
-                return [2 /*return*/];
+                res = _a.sent();
+                return [4, res.json()];
+            case 2:
+                bal = _a.sent();
+                btc.balance = bal.final_balance;
+                return [2, btc];
         }
     });
 }); };
-exports.editProfile = editProfile;
+exports.decryptBtcWallet = decryptBtcWallet;

@@ -35,22 +35,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-exports.editProfile = void 0;
-var user_1 = require("../../data/models/user");
-// edit the users info
-var editProfile = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, currency, state, country, name, phoneNumber, secondaryEmail, id, user;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createTransaction = void 0;
+var createTransaction = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, base, quote, amount, quotePrice, buyer, seller;
     return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.body, currency = _a.currency, state = _a.state, country = _a.country, name = _a.name, phoneNumber = _a.phoneNumber, secondaryEmail = _a.secondaryEmail, id = _a.id;
-                return [4 /*yield*/, user_1["default"].editProfile(id, { currency: currency, state: state, country: country, name: name, phoneNumber: phoneNumber, secondaryEmail: secondaryEmail })];
-            case 1:
-                user = _b.sent();
-                res.json(user);
-                return [2 /*return*/];
-        }
+        _a = req.body, base = _a.base, quote = _a.quote, amount = _a.amount, quotePrice = _a.quotePrice, buyer = _a.buyer, seller = _a.seller;
+        res.json({ message: 'recieved' });
+        return [2];
     });
 }); };
-exports.editProfile = editProfile;
+exports.createTransaction = createTransaction;
