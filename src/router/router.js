@@ -35,22 +35,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-exports.editProfile = void 0;
-var user_1 = require("../../data/models/user");
-// edit the users info
-var editProfile = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, currency, state, country, name, phoneNumber, secondaryEmail, id, user;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = req.body, currency = _a.currency, state = _a.state, country = _a.country, name = _a.name, phoneNumber = _a.phoneNumber, secondaryEmail = _a.secondaryEmail, id = _a.id;
-                return [4 /*yield*/, user_1["default"].editProfile(id, { currency: currency, state: state, country: country, name: name, phoneNumber: phoneNumber, secondaryEmail: secondaryEmail })];
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.router = void 0;
+var express_1 = require("express");
+var auth_cont_1 = require("../controllers/auth/auth-cont");
+var user_1 = require("../controllers/user/user");
+var router = express_1.Router();
+exports.router = router;
+router.post('/signup', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4, auth_cont_1.createUserWithEmailAndPassword(req, res)];
             case 1:
-                user = _b.sent();
-                res.json(user);
-                return [2 /*return*/];
+                _a.sent();
+                return [2];
         }
     });
-}); };
-exports.editProfile = editProfile;
+}); });
+router.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4, auth_cont_1.loginUserWithEmailAndPassword(req, res)];
+            case 1:
+                _a.sent();
+                return [2];
+        }
+    });
+}); });
+router.get('/logout', auth_cont_1.logoutUser);
+router.get('/', function (req, res) {
+    console.log('connected');
+    res.render('index', { message: 'connected' });
+});
+router.post('/dashboard/profile', user_1.editProfile);

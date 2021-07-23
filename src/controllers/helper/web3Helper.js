@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,22 +54,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
-exports.editProfile = void 0;
-var user_1 = require("../../data/models/user");
-// edit the users info
-var editProfile = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, currency, state, country, name, phoneNumber, secondaryEmail, id, user;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.decryptEthWalletAndGetBalance = exports.web3 = void 0;
+var Web3 = __importStar(require("web3"));
+var url = 'https://kovan.infura.io/v3/b96ec2452bf040789706d7e4a53be119';
+var mainNet = 'https://mainnet.infura.io/v3/b96ec2452bf040789706d7e4a53be119';
+var web3 = new Web3(mainNet);
+exports.web3 = web3;
+var decryptEthWalletAndGetBalance = function (user, password, login) { return __awaiter(void 0, void 0, void 0, function () {
+    var ethWallet, address, balance, address, balance;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _a = req.body, currency = _a.currency, state = _a.state, country = _a.country, name = _a.name, phoneNumber = _a.phoneNumber, secondaryEmail = _a.secondaryEmail, id = _a.id;
-                return [4 /*yield*/, user_1["default"].editProfile(id, { currency: currency, state: state, country: country, name: name, phoneNumber: phoneNumber, secondaryEmail: secondaryEmail })];
+                if (!login) return [3, 2];
+                ethWallet = user.wallet.eth;
+                address = web3.eth.Iban.toIban(ethWallet.address);
+                return [4, web3.eth.getBalance(address)];
             case 1:
-                user = _b.sent();
-                res.json(user);
-                return [2 /*return*/];
+                balance = _a.sent();
+                ethWallet.balance = web3.utils.fromWei(balance, 'ether');
+                return [3, 4];
+            case 2:
+                ethWallet = web3.eth.accounts.decrypt(user.wallet.eth, password);
+                address = web3.eth.Iban.toIban(ethWallet.address);
+                return [4, web3.eth.getBalance(address)];
+            case 3:
+                balance = _a.sent();
+                ethWallet.balance = web3.utils.fromWei(balance, 'ether');
+                _a.label = 4;
+            case 4: return [2, ethWallet];
         }
     });
 }); };
-exports.editProfile = editProfile;
+exports.decryptEthWalletAndGetBalance = decryptEthWalletAndGetBalance;

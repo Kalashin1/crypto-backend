@@ -55,10 +55,6 @@ router.post('/signup', function (req, res) { return __awaiter(void 0, void 0, vo
         }
     });
 }); });
-// signup page
-router.get('/signup', function (req, res) {
-    res.render('signup');
-});
 // login route and handler function
 router.post('/login', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
@@ -70,26 +66,10 @@ router.post('/login', function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-// login page
-router.get('/login', function (req, res) {
-    res.render('login');
-});
 //logout route and handler function
 router.get('/logout', auth_cont_1.logoutUser);
-router.get('/', function (req, res) {
+router.get('/', function (_req, res) {
     console.log('connected');
     res.render('index', { message: 'connected' });
-});
-router.get('/dashboard/index', function (req, res) {
-    console.log('connected');
-    res.render('dashboard/index', { message: 'connected' });
-});
-router.get('/dashboard/create-offer', function (req, res) {
-    console.log('created');
-    res.render('dashboard/createoffer');
-});
-router.post('/create-offer', user_1.createOffer);
-router.get('/dashboard/profile', function (req, res) {
-    res.render('dashboard/profile');
 });
 router.post('/dashboard/profile', user_1.editProfile);

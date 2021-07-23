@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,10 +54,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-exports.__esModule = true;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUser = exports.validateUser = void 0;
-var jwt = require("jsonwebtoken");
-var user_1 = require("../../data/models/user");
+var jwt = __importStar(require("jsonwebtoken"));
+var user_1 = __importDefault(require("../../data/models/user"));
 var web3Helper_1 = require("../helper/web3Helper");
 var btcHelper_1 = require("../helper/btcHelper");
 var ltcHelper_1 = require("../helper/ltcHelper");
@@ -48,17 +70,14 @@ var validateUser = function (req, res, next) {
     if (token) {
         jwt.verify(token, 'my secrete key', function (err, decodedToken) {
             if (err) {
-                // console.log(err.message)
                 res.status(400).json(err.message);
             }
             else {
-                // console.log(decodedToken)
                 next();
             }
         });
     }
     else {
-        // console.log('no cookie')
         res.status(400).json('you are not logged in');
     }
 };
@@ -71,24 +90,24 @@ var getUser = function (req, res) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!err) return [3 /*break*/, 1];
+                        if (!err) return [3, 1];
                         console.log(err);
-                        return [3 /*break*/, 7];
+                        return [3, 7];
                     case 1:
                         secrete = 'Foo, Bar, John, Doe, Guth';
-                        return [4 /*yield*/, user_1["default"].findById(decodedToken.id)];
+                        return [4, user_1.default.findById(decodedToken.id)];
                     case 2:
                         user = _a.sent();
-                        return [4 /*yield*/, web3Helper_1.decryptEthWalletAndGetBalance(user, secrete, false)];
+                        return [4, web3Helper_1.decryptEthWalletAndGetBalance(user, secrete, false)];
                     case 3:
                         eth = _a.sent();
-                        return [4 /*yield*/, btcHelper_1.decryptBtcWallet(user, secrete)];
+                        return [4, btcHelper_1.decryptBtcWallet(user, secrete)];
                     case 4:
                         btc = _a.sent();
-                        return [4 /*yield*/, ltcHelper_1.decryptLtcWallet(user, secrete)];
+                        return [4, ltcHelper_1.decryptLtcWallet(user, secrete)];
                     case 5:
                         ltc = _a.sent();
-                        return [4 /*yield*/, dogeHelper_1.decryptDogeWallet(user, secrete)];
+                        return [4, dogeHelper_1.decryptDogeWallet(user, secrete)];
                     case 6:
                         doge = _a.sent();
                         console.log(user);
@@ -105,13 +124,12 @@ var getUser = function (req, res) {
                             country: user.country
                         });
                         _a.label = 7;
-                    case 7: return [2 /*return*/];
+                    case 7: return [2];
                 }
             });
         }); });
     }
     else {
-        // console.log('no cookie')
         res.status(400).json('you are not logged in');
     }
 };

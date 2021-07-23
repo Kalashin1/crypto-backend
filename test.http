@@ -31,13 +31,13 @@ credentials: true
 
 ###
 
-GET http://localhost:8080/logout
+GET http://localhost:3000/logout
 Accept: *
 credentials: true,
 
 
 ###
-GET http://localhost:8080/user
+GET http://localhost:3000/user
 Accept: *
 credentials: true
 
