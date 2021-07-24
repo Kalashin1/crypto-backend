@@ -70,6 +70,6 @@ router.post('/login', function (req, res) { return __awaiter(void 0, void 0, voi
 router.get('/logout', auth_cont_1.logoutUser);
 router.get('/', function (_req, res) {
     console.log('connected');
-    res.render('index', { message: 'connected' });
+    res.json({ message: 'connected' });
 });
 router.post('/dashboard/profile', user_1.editProfile);
