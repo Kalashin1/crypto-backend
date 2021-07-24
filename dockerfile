@@ -11,6 +11,8 @@ RUN npm ci --only=production
 
 COPY . .
 
+RUN npm run compile
+
 EXPOSE 3000
 
-CMD [ "node", "server.js" ]
+CMD [ "node", "app.js" ]
