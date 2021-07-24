@@ -15,4 +15,8 @@ RUN npm run compile
 
 EXPOSE 3000
 
+<<<<<<< HEAD
 CMD [ "node", "app.js" ]
+=======
+CMD [ "node", "./app.js" ]
+>>>>>>> c5579ed5f2b384f32c3e268f1ff1ce98f76f9c4c
