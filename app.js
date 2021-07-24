@@ -4,6 +4,7 @@ var express = require("express");
 var mongoose = require("mongoose");
 var cookieParser = require("cookie-parser");
 var path = require("path");
+var cors = require("cors");
 var validate_user_1 = require("./controllers/auth/validate-user");
 // OUR CUSTOM IMPORTS WILL SIT HERE
 // IMPORTING OUR DIFF ROUTERS
@@ -19,12 +20,13 @@ var PORT = 3000;
 var url = 'mongodb+srv://kalashin:Kalashin1@cluster0.4umw1.gcp.mongodb.net/crypto?retryWrites=true&w=majority';
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-// const corsOptions = {
-//   origin: '*',
-//   credentials: true,
-//   exposedHeaders: ['set-cookie']
-// }
+var corsOptions = {
+    origin: '*',
+    credentials: true,
+    exposedHeaders: ['set-cookie']
+};
 // MIDDLEWARES
+app.use(cors(corsOptions));
 //  COOKIE PARSER
 app.use(cookieParser());
 // JSON PARSER
