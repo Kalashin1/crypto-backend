@@ -36,7 +36,7 @@ router.get('/logout', logoutUser)
 
 router.get('/', (_req: express.Request, res: express.Response) => {
   console.log('connected')
-  res.render('index',{ message: 'connected' })
+  res.json({ message: 'connected' })
 })
 
 
