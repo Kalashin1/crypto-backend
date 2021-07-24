@@ -39,6 +39,10 @@ exports.__esModule = true;
 exports.getUser = exports.validateUser = void 0;
 var jwt = require("jsonwebtoken");
 var user_1 = require("../../data/models/user");
+var web3Helper_1 = require("../helper/web3Helper");
+var btcHelper_1 = require("../helper/btcHelper");
+var ltcHelper_1 = require("../helper/ltcHelper");
+var dogeHelper_1 = require("../helper/dogeHelper");
 var validateUser = function (req, res, next) {
     var token = req.cookies.jwt;
     if (token) {
@@ -63,19 +67,45 @@ var getUser = function (req, res) {
     var token = req.cookies.jwt;
     if (token) {
         jwt.verify(token, 'my secrete key', function (err, decodedToken) { return __awaiter(void 0, void 0, void 0, function () {
-            var user;
+            var secrete, user, eth, btc, ltc, doge;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         if (!err) return [3 /*break*/, 1];
                         console.log(err);
-                        return [3 /*break*/, 3];
-                    case 1: return [4 /*yield*/, user_1["default"].findById(decodedToken.id)];
+                        return [3 /*break*/, 7];
+                    case 1:
+                        secrete = 'Foo, Bar, John, Doe, Guth';
+                        return [4 /*yield*/, user_1["default"].findById(decodedToken.id)];
                     case 2:
                         user = _a.sent();
-                        res.json({ name: user === null || user === void 0 ? void 0 : user.name, email: user === null || user === void 0 ? void 0 : user.email, id: user === null || user === void 0 ? void 0 : user._id });
-                        _a.label = 3;
-                    case 3: return [2 /*return*/];
+                        return [4 /*yield*/, web3Helper_1.decryptEthWalletAndGetBalance(user, secrete, false)];
+                    case 3:
+                        eth = _a.sent();
+                        return [4 /*yield*/, btcHelper_1.decryptBtcWallet(user, secrete)];
+                    case 4:
+                        btc = _a.sent();
+                        return [4 /*yield*/, ltcHelper_1.decryptLtcWallet(user, secrete)];
+                    case 5:
+                        ltc = _a.sent();
+                        return [4 /*yield*/, dogeHelper_1.decryptDogeWallet(user, secrete)];
+                    case 6:
+                        doge = _a.sent();
+                        console.log(user);
+                        res.json({
+                            name: user === null || user === void 0 ? void 0 : user.name,
+                            email: user === null || user === void 0 ? void 0 : user.email,
+                            offers: user === null || user === void 0 ? void 0 : user.trades,
+                            id: user === null || user === void 0 ? void 0 : user._id,
+                            wallet: { eth: eth, btc: btc, ltc: ltc, doge: doge },
+                            secondaryEmail: user === null || user === void 0 ? void 0 : user.secondaryEmail,
+                            phoneNumber: user.phoneNumber,
+                            currency: user.currency,
+                            state: user.state,
+                            country: user.country
+                        });
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         }); });
