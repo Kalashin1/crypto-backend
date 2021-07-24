@@ -15,7 +15,8 @@ jobs:
         env:
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ github.repository }}
         steps:
-        - uses: actions/checkout@v2
+        - name: Checkout
+          uses: actions/checkout@master
 
         - name: Login
           uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
