@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as mongoose from 'mongoose'
 import * as cookieParser from 'cookie-parser'
 import * as path from 'path'
+import * as cors from 'cors'
 
 
 import { getUser } from './controllers/auth/validate-user'
@@ -30,13 +31,14 @@ const url = 'mongodb+srv://kalashin:Kalashin1@cluster0.4umw1.gcp.mongodb.net/cry
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'));
 
-// const corsOptions = {
-//   origin: '*',
-//   credentials: true,
-//   exposedHeaders: ['set-cookie']
-// }
+const corsOptions = {
+  origin: '*',
+  credentials: true,
+  exposedHeaders: ['set-cookie']
+}
 
 // MIDDLEWARES
+app.use(cors(corsOptions))
 //  COOKIE PARSER
 app.use(cookieParser())
 // JSON PARSER
