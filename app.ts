@@ -32,7 +32,6 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'));
 
 const corsOptions = {
-  origin: '*',
   credentials: true,
   exposedHeaders: ['set-cookie']
 }
