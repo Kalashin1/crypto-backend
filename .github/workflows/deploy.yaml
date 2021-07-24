@@ -39,5 +39,8 @@ jobs:
         - name: Push Docker image
           run: docker push $IMAGE_NAME
 
-#         - name: Deploy Docker image
-#           run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed
+
+
+        - name: Deploy Docker image
+          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed
+          # gcr.io/arched-iterator-319009/crypto_backend@sha256:611721ad0da3a26e88c5ea08bf7f7f881db80ff7ac24da8d01d5bb2fe08bf288
