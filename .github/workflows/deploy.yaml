@@ -13,6 +13,7 @@ jobs:
         name: Setup Gcloud Account
         runs-on: ubuntu-latest
         env:
+<<<<<<< HEAD
           IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/crypto_backend
         steps:
         - name: Checkout
@@ -20,6 +21,14 @@ jobs:
 
         - name: Login
           uses: google-github-actions/setup-gcloud@master
+=======
+          IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/kalashin
+        steps:
+        - uses: actions/checkout@v2
+
+        - name: Login
+          uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+>>>>>>> secondary
           with:
             project_id: ${{ secrets.GCP_PROJECT_ID }}
             service_account_email: ${{ secrets.GCP_EMAIL }}
@@ -34,11 +43,22 @@ jobs:
         - name: Build Docker image
           run: docker build . -t $IMAGE_NAME
 
+<<<<<<< HEAD
 #         - name: Test Docker image
 #           run: docker run $IMAGE_NAME
+=======
+        # - name: Test Docker image
+        #   run: docker run $IMAGE_NAME sh -c "go test -v"
+>>>>>>> secondary
 
         - name: Push Docker image
           run: docker push $IMAGE_NAME
 
+<<<<<<< HEAD
 #         - name: Deploy Docker image
 #           run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed
+=======
+        - name: Deploy Docker image
+          run: gcloud run deploy ${{ secrets.GCP_PROJECT_ID }} --image $IMAGE_NAME --region us-central1 --platform managed
+          # gcr.io/arched-iterator-319009/crypto_backend@sha256:611721ad0da3a26e88c5ea08bf7f7f881db80ff7ac24da8d01d5bb2fe08bf288
+>>>>>>> secondary

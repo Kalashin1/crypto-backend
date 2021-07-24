@@ -35,8 +35,12 @@ var userSchema = new mongoose.Schema({
     country: {
         type: String
     },
+    currency: {
+        type: String
+    },
     state: {
         type: String
-    }
+    },
+    trades: []
 });
 exports["default"] = userSchema;

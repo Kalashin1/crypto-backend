@@ -38,30 +38,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
-// IMPORT THE USER SCHEMA 
+// IMPORT THE USER SCHEMA
 var user_1 = require("../Schemas/user");
 var web3Helper_1 = require("../../controllers/helper/web3Helper");
+// functions for creating and encrypting some wallets
+// BTC
+var btcHelper_1 = require("../../controllers/helper/btcHelper");
+// LTC
+var ltcHelper_1 = require("../../controllers/helper/ltcHelper");
+// DOGE
+var dogeHelper_1 = require("../../controllers/helper/dogeHelper");
 var saltRounds = 10;
 //HASHING USERS PASSWORD
 user_1["default"].pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function () {
-        var eth, _a;
+        var eth, secrete, btc, ltc, doge, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    if (!(this.password.length < 15)) return [3 /*break*/, 2];
+                    if (!(this.password.length < 15)) return [3 /*break*/, 4];
                     eth = web3Helper_1.web3.eth.accounts.create();
-                    eth = web3Helper_1.web3.eth.accounts.encrypt(eth.privateKey, this.password);
-                    this.wallet = { eth: eth };
-                    // TODO hash the users password before we save it to the databse
+                    secrete = 'Foo, Bar, John, Doe, Guth';
+                    eth = web3Helper_1.web3.eth.accounts.encrypt(eth.privateKey, secrete);
+                    btc = btcHelper_1.createAndEncryptBtcWallet(secrete);
+                    return [4 /*yield*/, ltcHelper_1.createAndEncryptLtcWallet(secrete)];
+                case 1:
+                    ltc = _b.sent();
+                    return [4 /*yield*/, dogeHelper_1.createAndEncryptDogeWallet(secrete)];
+                case 2:
+                    doge = _b.sent();
+                    this.wallet = { eth: eth, btc: btc, ltc: ltc, doge: doge };
+                    // * hash the users password before we save it to the databse
                     _a = this;
                     return [4 /*yield*/, bcrypt.hash(this.password, saltRounds)];
-                case 1:
-                    // TODO hash the users password before we save it to the databse
+                case 3:
+                    // * hash the users password before we save it to the databse
                     _a.password = _b.sent();
                     next();
-                    _b.label = 2;
-                case 2:
+                    _b.label = 4;
+                case 4:
                     next();
                     return [2 /*return*/];
             }
@@ -70,7 +85,7 @@ user_1["default"].pre('save', function (next) {
 });
 user_1["default"].statics.login = function (email, password) {
     return __awaiter(this, void 0, void 0, function () {
-        var user, result, decryptedAccount;
+        var user, result;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, this.findOne({ email: email })
@@ -83,8 +98,6 @@ user_1["default"].statics.login = function (email, password) {
                 case 2:
                     result = _a.sent();
                     if (result) {
-                        decryptedAccount = web3Helper_1.web3.eth.accounts.decrypt(user.wallet.eth, password);
-                        user.wallet.eth = decryptedAccount;
                         return [2 /*return*/, user];
                     }
                     else {
@@ -92,6 +105,48 @@ user_1["default"].statics.login = function (email, password) {
                     }
                     _a.label = 3;
                 case 3: throw Error('incorrect email, no user exists for this email');
+            }
+        });
+    });
+};
+user_1["default"].statics.createOffer = function (_id, offer) {
+    return __awaiter(this, void 0, void 0, function () {
+        var user;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, mongoose.model('user').findById(_id)];
+                case 1:
+                    user = _a.sent();
+                    user === null || user === void 0 ? void 0 : user.trades.push(offer);
+                    console.log(user === null || user === void 0 ? void 0 : user.trades);
+                    return [4 /*yield*/, (user === null || user === void 0 ? void 0 : user.save())];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/, user === null || user === void 0 ? void 0 : user.trades];
+            }
+        });
+    });
+};
+user_1["default"].statics.editProfile = function (_id, obj) {
+    return __awaiter(this, void 0, void 0, function () {
+        var user, country, state, secondaryEmail, phoneNumber, name, currency;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, mongoose.model('user').findById(_id)];
+                case 1:
+                    user = _a.sent();
+                    country = obj.country, state = obj.state, secondaryEmail = obj.secondaryEmail, phoneNumber = obj.phoneNumber, name = obj.name, currency = obj.currency;
+                    user.country = country !== null && country !== void 0 ? country : user.country;
+                    user.state = state !== null && state !== void 0 ? state : user.state;
+                    user.secondaryEmail = secondaryEmail !== null && secondaryEmail !== void 0 ? secondaryEmail : user.secondaryEmail;
+                    user.phoneNumber = phoneNumber !== null && phoneNumber !== void 0 ? phoneNumber : user.phoneNumber;
+                    user.name = name !== null && name !== void 0 ? name : user.name;
+                    user.currency = currency !== null && currency !== void 0 ? currency : user.currency;
+                    return [4 /*yield*/, user.save()];
+                case 2:
+                    _a.sent();
+                    console.log(user);
+                    return [2 /*return*/, user];
             }
         });
     });

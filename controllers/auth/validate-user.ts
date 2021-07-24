@@ -4,6 +4,15 @@ import express from 'express'
 
 import userModel from '../../data/models/user';
 
+import { decryptEthWalletAndGetBalance } from '../helper/web3Helper'
+
+import { decryptBtcWallet } from '../helper/btcHelper'
+
+import { decryptLtcWallet } from '../helper/ltcHelper'
+
+import { decryptDogeWallet } from '../helper/dogeHelper'
+
+
 
 const validateUser = (req: express.Request, res: express.Response, next: Function) => {
   const token:string = req.cookies.jwt
@@ -36,9 +45,32 @@ const getUser = (req: express.Request, res: express.Response) => {
       else{
         // console.log(decodedToken)
 
+        const secrete = 'Foo, Bar, John, Doe, Guth'
+
         const user = await userModel.findById(decodedToken.id)
 
-        res.json({ name: user?.name, email: user?.email, id: user?._id })
+        const eth = await decryptEthWalletAndGetBalance(user, secrete, false)
+
+        const btc = await decryptBtcWallet(user, secrete)
+
+        const ltc = await decryptLtcWallet(user, secrete)
+
+        const doge = await decryptDogeWallet(user, secrete)
+
+        console.log(user)
+
+        res.json({ 
+          name: user?.name, 
+          email: user?.email, 
+          offers: user?.trades, 
+          id: user?._id,
+          wallet: {eth, btc, ltc, doge},
+          secondaryEmail: user?.secondaryEmail,
+          phoneNumber: user.phoneNumber,
+          currency: user.currency,
+          state: user.state,
+          country: user.country
+        })
 
       }
     })

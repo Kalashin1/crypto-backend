@@ -36,9 +36,13 @@ const userSchema:mongoose.Schema<userInterface> = new mongoose.Schema({
   country: {
     type: String
   },
+  currency: {
+    type: String
+  },
   state: {
     type: String
-  }
+  },
+  trades: [],
 })
 
 export default userSchema
