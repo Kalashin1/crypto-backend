@@ -2,9 +2,9 @@
   "name": "crypto-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "nodemon run ./app.js",
+    "start": "node run ./app.js",
     "compile": "tsc app.ts -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
