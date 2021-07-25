@@ -21,6 +21,7 @@ var url = 'mongodb+srv://kalashin:Kalashin1@cluster0.4umw1.gcp.mongodb.net/crypt
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 var corsOptions = {
+    origin: 'http://localhost:3000',
     credentials: true,
     exposedHeaders: ['set-cookie']
 };
