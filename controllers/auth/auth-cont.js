@@ -59,7 +59,7 @@ var createUserWithEmailAndPassword = function (req, res) { return __awaiter(void
                 user = _b.sent();
                 token = jwt_handler_1.createToken(user._id);
                 // send the cookie back to the user agent
-                res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // in production add secure:true
+                res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000, secure: true, sameSite: 'none' }); // in production add secure:true
                 res.status(200).json(user);
                 return [3 /*break*/, 4];
             case 3:
@@ -92,7 +92,7 @@ var loginUserWithEmailAndPassword = function (req, res) { return __awaiter(void 
                 ;
                 token = jwt_handler_1.createToken(user._id) // create a token for that user
                 ;
-                res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000 }); // create a cookie to hold the jwt
+                res.cookie('jwt', token, { httpOnly: true, maxAge: jwt_handler_1.maxAge * 1000, secure: true, sameSite: 'none' }); // create a cookie to hold the jwt
                 res.status(200).end(JSON.stringify(user));
                 return [3 /*break*/, 4];
             case 3:
