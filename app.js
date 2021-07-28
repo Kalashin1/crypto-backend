@@ -21,7 +21,7 @@ var url = 'mongodb+srv://kalashin:Kalashin1@cluster0.4umw1.gcp.mongodb.net/crypt
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 var corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'https://legatoex-zp4banx7ka-uc.a.run.app/',
     credentials: true,
     exposedHeaders: ['set-cookie']
 };
