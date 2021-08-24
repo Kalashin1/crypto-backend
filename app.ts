@@ -1,8 +1,8 @@
-import * as express from 'express';
-import * as mongoose from 'mongoose'
-import * as cookieParser from 'cookie-parser'
-import * as path from 'path'
-import * as cors from 'cors'
+const express = require('express');
+const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser')
+const path = require('path')
+const cors = require('cors')
 
 
 import { getUser } from './controllers/auth/validate-user'

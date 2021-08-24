@@ -1,4 +1,4 @@
-import * as Web3 from 'web3'
+const Web3 = require('web3')
 
 const url = 'https://kovan.infura.io/v3/b96ec2452bf040789706d7e4a53be119'
 
