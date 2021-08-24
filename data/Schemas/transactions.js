@@ -1,9 +1,9 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.transactionSchema = void 0;
-var mongodb_1 = require("mongodb");
-var mongoose_1 = require("mongoose");
-var transactionSchema = new mongoose_1.Schema({
+const mongodb_1 = require("mongodb");
+const mongoose_1 = require("mongoose");
+const transactionSchema = new mongoose_1.Schema({
     base: {
         type: String,
         required: [true, 'please provide the base currency']
@@ -38,11 +38,11 @@ var transactionSchema = new mongoose_1.Schema({
     },
     createdAt: {
         type: Date,
-        "default": new Date()
+        default: new Date()
     },
     status: {
         type: String,
-        "default": 'pending'
+        default: 'pending'
     }
 });
 exports.transactionSchema = transactionSchema;

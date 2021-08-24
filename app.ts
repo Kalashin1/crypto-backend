@@ -32,6 +32,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'));
 
 const corsOptions = {
+  origin: ['https://legatoex-zp4banx7ka-uc.a.run.app', 'http://localhost:3000'],
   credentials: true,
   exposedHeaders: ['set-cookie']
 }
