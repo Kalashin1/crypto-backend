@@ -1,26 +1,10 @@
 // IMPORTING USER MODEL TO CREATE A USER
 import userModel from '../../data/models/user'
 
-import { decryptEthWalletAndGetBalance } from '../helper/web3Helper'
-
-import { decryptBtcWallet } from '../helper/btcHelper'
-
-import { decryptLtcWallet } from '../helper/ltcHelper'
-
-import { decryptDogeWallet } from '../helper/dogeHelper'
-
 import express from 'express'
 
-
-
-
-
-import { maxAge, createToken } from '../helper/jwt-handler'
+import {  createToken } from '../helper/jwt-handler'
 import errorHandler from '../helper/error-handler'
-
-
-
-
 
 
 // CREATING A NEW USER
@@ -35,14 +19,12 @@ const createUserWithEmailAndPassword = async (req: express.Request, res: express
    // IF THE USER IS CREATED SUCCESSFULLY CREATE A JWT WITH THEIR ID
   const user = await userModel.create({name, email, password, phoneNumber})
 
-
   // CREATE A COOKIE TO HOLD THE JWT
   const token = createToken(user._id)
 
   // send the cookie back to the user agent
-  res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // in production add secure:true
 
-  res.status(200).json(user)
+  res.status(200).json({ token })
  }
  catch (err) {
   console.log(err) // handles the error if ther is an error
@@ -63,9 +45,7 @@ const loginUserWithEmailAndPassword = async (req: express.Request, res: express.
 
     const token = createToken(user._id)       // create a token for that user
 
-    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000}) // create a cookie to hold the jwt
-
-    res.status(200).end(JSON.stringify(user))
+    res.status(200).json({ token })  // send back the token
 
   }
   catch (err) {
@@ -77,11 +57,11 @@ const loginUserWithEmailAndPassword = async (req: express.Request, res: express.
 
 const logoutUser = async (req: express.Request, res: express.Response) => {
 
-  if( typeof req.cookies.jwt !== undefined){ // if cookie with the value of jwt exists
+  if( typeof req.headers.token !== undefined){ // if cookie with the value of jwt exists
 
     // res.cookie('jwt', '', {maxAge: 1}) // delete the cookie
 
-    res.clearCookie('jwt')
+    delete req.headers.token
 
     res.json({message: 'logout successfull'})  // send the user a logout successfull message
   }
@@ -95,3 +75,4 @@ export {
   loginUserWithEmailAndPassword,  // login function
   logoutUser                     // logout function
 }
+

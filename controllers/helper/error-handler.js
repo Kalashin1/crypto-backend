@@ -1,7 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 function errorHandler(err) {
-    const errors = { email: '', password: '', name: '' };
+    var errors = { email: '', password: '', name: '' };
     if (err.message.includes('incorrect email')) {
         errors.email = 'no user exists with that email';
     }
@@ -13,10 +13,11 @@ function errorHandler(err) {
         return errors;
     }
     if (err.message.includes('user validation failed')) {
-        Object.values(err.errors).forEach(({ properties }) => {
+        Object.values(err.errors).forEach(function (_a) {
+            var properties = _a.properties;
             errors[properties.path] = properties.message;
         });
     }
     return errors;
 }
-exports.default = errorHandler;
+exports["default"] = errorHandler;

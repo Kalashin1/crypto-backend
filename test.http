@@ -22,10 +22,9 @@ credentials: true
 POST http://localhost:3000/login
 Content-Type: application/json
 Accept: *
-credentials: true
 
 {
-  "email": "kalashinkov10@gmail.com",
+  "email": "kinaneesamsonjohn@gmail.com",
   "password": "Test1234"
 }
 

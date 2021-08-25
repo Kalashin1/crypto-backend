@@ -53,7 +53,7 @@ app.use(express.static('public'))
 
 // routes
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
-.then(result => app.listen(process.env.PORT || PORT, () => console.log(`app running on port ${process.env.PORT || PORT}`)))
+.then(_result => app.listen(process.env.PORT || PORT, () => console.log(`app running on port ${process.env.PORT || PORT}`)))
 .catch(err => console.log(err))
 
 

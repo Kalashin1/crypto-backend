@@ -1,6 +1,6 @@
 const Web3 = require('web3')
 
-const url = 'https://kovan.infura.io/v3/b96ec2452bf040789706d7e4a53be119'
+const _url = 'https://kovan.infura.io/v3/b96ec2452bf040789706d7e4a53be119'
 
 const mainNet = 'https://mainnet.infura.io/v3/b96ec2452bf040789706d7e4a53be119'
 

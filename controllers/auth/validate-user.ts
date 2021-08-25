@@ -15,7 +15,7 @@ import { decryptDogeWallet } from '../helper/dogeHelper'
 
 
 const validateUser = (req: express.Request, res: express.Response, next: Function) => {
-  const token:string = req.cookies.jwt
+  const token:string = req.headers.token.toString()
   if(token){
     jwt.verify(token, 'my secrete key', (err, decodedToken) => {
       if(err){
@@ -35,15 +35,14 @@ const validateUser = (req: express.Request, res: express.Response, next: Functio
 }
 
 const getUser = (req: express.Request, res: express.Response) => {
-  const token = req.cookies.jwt
+  const token = req.headers.token.toString()
 
   if (token) {
-    jwt.verify(token, 'my secrete key', async (err, decodedToken) => {
+    jwt.verify(token, 'my secrete key', async (err, decodedToken: any) => {
       if(err){
         console.log(err);
       }
       else{
-        // console.log(decodedToken)
 
         const secrete = 'Foo, Bar, John, Doe, Guth'
 
@@ -57,7 +56,7 @@ const getUser = (req: express.Request, res: express.Response) => {
 
         const doge = await decryptDogeWallet(user, secrete)
 
-        console.log(user)
+     
 
         res.json({ 
           name: user?.name, 
