@@ -37,8 +37,8 @@ credentials: true,
 
 ###
 GET http://localhost:3000/user
+Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZmNjZTY5NzNkZWFiNDRlYThkY2Q1MSIsImlhdCI6MTYzMDM2MjM3NywiZXhwIjoxNjMwNjIxNTc3fQ.mDNl9PNQeJlaut2BGXWTtwq4jLDXTKyvOyriPiRo6Js
 Accept: *
-credentials: true
 
 ###
 
@@ -55,3 +55,17 @@ POST https://api.blockcypher.com/v1/ltc/main/addrs
 # get address balance
 
 GET  https://blockchain.info/rawaddr/1LnhUtjd82mF7HyV19AMYoYp73VYeQVvjt
+
+###
+POST http://localhost:3000/transaction/60fcce6973deab44ea8dcd51
+Content-Type: application/json
+
+{
+  "amount": 5000,
+  "token": "Bitcoin",
+  "tokenSymbol": "BTC",
+  "quote": "1/50000"
+}
+
+###
+GET http://localhost:3000/transactions/

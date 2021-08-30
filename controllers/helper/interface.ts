@@ -1,4 +1,4 @@
-import { Document, Model } from 'mongoose'
+import { Document, Model, ObjectId } from 'mongoose'
 
 interface Trade extends Document {
   
@@ -40,7 +40,35 @@ interface userModel extends Model<userInterface>{
 
 
 interface transactionInterface extends Document {
-  
+  _id: ObjectId
+  reference: string,
+  customerId: ObjectId
+  customerProfile: any
+  status: string
+  amount: number
+  token: string
+  tokenSymbol: string
+  quote: number
+}
+
+export interface TransactionModel extends Model<transactionInterface> {
+
+}
+
+export interface INotification extends Document {
+  _id: ObjectId
+  customer: any
+  customerId: ObjectId
+  text: string
+  type: string
+  isRead: boolean
+  status: string
+  date: Date
+  markAsRead: () => Promise<INotification>
+}
+
+export interface NotificationModel extends Model<INotification> {
+
 }
 
 export { userInterface, userModel, transactionInterface, Trade, TradeModel, profileEdit }

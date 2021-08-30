@@ -1,48 +1,50 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 exports.transactionSchema = void 0;
-const mongodb_1 = require("mongodb");
-const mongoose_1 = require("mongoose");
-const transactionSchema = new mongoose_1.Schema({
-    base: {
+var mongodb_1 = require("mongodb");
+var mongoose_1 = require("mongoose");
+var transactionSchema = new mongoose_1.Schema({
+    reference: {
         type: String,
-        required: [true, 'please provide the base currency']
+        required: [true, 'please provide the reference to the transaction']
     },
-    quote: {
-        type: String,
-        required: [true, 'please provide the quote currency']
+    customerId: {
+        type: mongodb_1.ObjectID,
+        required: [true, 'Please provide the Id of the customer the transaction belongs to.']
     },
-    amount: {
-        type: String,
-        required: [true, 'please provide the amount you are purchasing']
-    },
-    quotePrice: {
-        type: String,
-        required: [true, 'please provide the quote price']
-    },
-    buyer: {
-        type: {
-            name: String,
-            id: mongodb_1.ObjectID,
-            email: String
+    customerProfile: {
+        name: {
+            type: String,
+            required: [true, 'Please provide the name of the customer.']
         },
-        required: [true, 'please provide the buyer']
-    },
-    seller: {
-        type: {
-            name: String,
-            id: mongodb_1.ObjectID,
-            email: String
+        email: {
+            type: String,
+            required: [true, 'Please provide the email of the customer.']
         },
-        required: [true, 'please provide the Seller']
-    },
-    createdAt: {
-        type: Date,
-        default: new Date()
+        phoneNumber: {
+            type: String,
+            required: [true, 'Please provide the phone number of the customer.']
+        }
     },
     status: {
         type: String,
-        default: 'pending'
+        "default": 'initialized'
+    },
+    amount: {
+        type: Number,
+        required: [true, 'Please provide the amount of the transaction.']
+    },
+    token: {
+        type: String,
+        required: [true, 'Please provide the token the customer is trying to purchase.']
+    },
+    tokenSymbol: {
+        type: String,
+        required: [true, 'Please provide the symbol of the token.']
+    },
+    quote: {
+        type: String,
+        required: [true, 'Please provide the quote for this transaction.']
     }
 });
 exports.transactionSchema = transactionSchema;

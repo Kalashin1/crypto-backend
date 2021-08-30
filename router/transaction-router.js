@@ -5,4 +5,6 @@ var express_1 = require("express");
 var transaction_1 = require("../controllers/transactions/transaction");
 var router = express_1.Router();
 exports.router = router;
-router.post('/transaction', transaction_1.createTransaction);
+router.post('/transaction/:id', transaction_1.createTransaction);
+router.get('/transactions', transaction_1.getAllTransactions);
+router.get('/transaction/verify/:id', transaction_1.verifyTransaction);

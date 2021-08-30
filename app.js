@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var path = require('path');
 var cors = require('cors');
+require('dotenv').config();
 var validate_user_1 = require("./controllers/auth/validate-user");
 // OUR CUSTOM IMPORTS WILL SIT HERE
 // IMPORTING OUR DIFF ROUTERS
